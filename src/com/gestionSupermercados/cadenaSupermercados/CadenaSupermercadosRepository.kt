@@ -9,8 +9,8 @@ class CadenaSupermercadosRepository {
         return supermercados
     }
 
-    fun getAllSupermercadosAbiertos(horaApertura : String, horaCierre : String, diasAbierto : List<String>) : List<Supermercado> {
-        return supermercados.filter { it.horarioApertura == horaApertura && it.horarioCierre == horaCierre && it.diasAbierto == diasAbierto }
+    fun getAllSupermercadosAbiertos(hora: Int, dia :String) : List<Supermercado> {
+        return supermercados.filter { it.horarioApertura >= hora && hora <= it.horarioCierre && it.diasAbierto.contains(dia) }
     }
 
     fun addSupermercado(supermercado : Supermercado) {
