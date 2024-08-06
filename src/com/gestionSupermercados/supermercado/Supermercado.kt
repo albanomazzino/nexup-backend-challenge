@@ -5,5 +5,5 @@ data class Supermercado (
     val nombre : String,
     val horarioApertura : String,
     val horarioCierre : String,
-    val diasAbierto : String
+    val diasAbierto : List<String>
 )
