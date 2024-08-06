@@ -1,4 +1,9 @@
 package com.gestionSupermercados.supermercado
 
-class Supermercado {
-}
+data class Supermercado (
+    val id : Long,
+    val nombre : String,
+    val horarioApertura : Int,
+    val horarioCierre : Int,
+    val diasAbierto : List<String>
+)

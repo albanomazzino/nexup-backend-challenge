@@ -1,4 +1,7 @@
 package com.gestionSupermercados.producto
 
-class Producto {
-}
+data class Producto (
+    val id : Long,
+    val nombre : String,
+    val precio : Double
+)
