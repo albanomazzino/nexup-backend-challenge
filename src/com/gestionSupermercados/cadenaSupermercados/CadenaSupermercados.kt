@@ -1,4 +1,6 @@
 package com.gestionSupermercados.cadenaSupermercados
 
-class CadenaSupermercados {
-}
+data class CadenaSupermercados (
+    val nombre : String,
+    val id : Long
+)

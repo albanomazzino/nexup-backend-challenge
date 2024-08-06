@@ -1,4 +1,7 @@
 package com.gestionSupermercados.productoSupermercado.tenencia
 
-class SupermercadoTieneProducto {
-}
+data class SupermercadoTieneProducto (
+    val supermercadoId : Long,
+    val productoId : Long,
+    var stock : Int
+)
