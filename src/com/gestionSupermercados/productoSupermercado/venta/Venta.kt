@@ -2,7 +2,7 @@ package com.gestionSupermercados.productoSupermercado.venta
 
 import java.time.LocalDateTime
 
-data class SupermercadoVendeProducto (
+data class Venta (
     val productoId : Long,
     val supermercadoId : Long,
     val fecha : LocalDateTime,
