@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 class ProductoServiceTest {
-
     private lateinit var productoService: ProductoService
     private lateinit var productoRepository: ProductoRepository
 
@@ -24,6 +23,7 @@ class ProductoServiceTest {
         productoService.addProducto(producto)
 
         val productoEncontrado = productoService.getProductoById(ConstVals.testProducto1)
+
         assertEquals(producto, productoEncontrado)
     }
 

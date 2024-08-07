@@ -10,6 +10,7 @@ class VentaService (
     private val posesionService: PosesionService,
     private val productoService : ProductoService
 ) {
+
     fun addVenta(productoId: UUID, supermercadoId: UUID, fecha: LocalDateTime, cantidad: Int) : Double {
         val stockActual = posesionService.getStock(productoId, supermercadoId) ?: 0
 

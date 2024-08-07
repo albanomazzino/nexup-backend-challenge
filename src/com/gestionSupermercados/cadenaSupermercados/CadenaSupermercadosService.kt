@@ -60,6 +60,7 @@ class CadenaSupermercadosService(
         return ingresosTotales
     }
 
+
     fun getSupermercadoMayoresIngresos(cadenaSupermercadosId : UUID): String {
         val supermercadosCadena = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId)
         val ventasCadenaSupermercados = ventaService.getAllVentas().filter { it.supermercadoId in supermercadosCadena.map { supermercado -> supermercado.id } }

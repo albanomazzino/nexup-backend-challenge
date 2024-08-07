@@ -10,6 +10,7 @@ class PosesionService(
     private val supermercadoService: SupermercadoService
 ) {
     fun addPosesion(productoId: UUID, supermercadoId: UUID, stock: Int) {
+
         val producto = productoService.getProductoById(productoId)
         val supermercado = supermercadoService.getSupermercadoById(supermercadoId)
         if (producto != null && supermercado != null) {
@@ -26,6 +27,7 @@ class PosesionService(
     }
 
     fun getStock(productoId: UUID, supermercadoId: UUID): Int? {
+
         return posesionRepository.getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)?.stock
     }
 }

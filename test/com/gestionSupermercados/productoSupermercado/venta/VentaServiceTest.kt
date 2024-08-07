@@ -60,7 +60,6 @@ class VentaServiceTest {
         assertEquals(fecha, venta?.fecha)
         assertEquals(100 - cantidad, posesionService.getStock(ConstVals.testProducto1, ConstVals.testSupermercado1))
 
-        // Otra venta consecutiva
         val fechaVenta2 = LocalDateTime.now()
         ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado1, fechaVenta2, cantidad)
 
@@ -103,6 +102,7 @@ class VentaServiceTest {
         ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado1, LocalDateTime.now(), 5)
 
         val ingresos = ventaService.getIngresosByProductoIdSupermercadoId(ConstVals.testProducto1, ConstVals.testSupermercado1)
+
         assertEquals(15 * producto.precio, ingresos)
     }
 
