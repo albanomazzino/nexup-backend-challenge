@@ -1,11 +1,12 @@
 package com.gestionSupermercados.productoSupermercado.venta
 
 import java.time.LocalDateTime
+import java.util.*
 
 data class Venta (
-    val id: Long,
-    val productoId : Long,
-    val supermercadoId : Long,
+    val id: UUID,
+    val productoId : UUID,
+    val supermercadoId : UUID,
     val fecha : LocalDateTime,
     val cantidad : Int,
 )

@@ -1,5 +1,6 @@
 package com.gestionSupermercados.productoSupermercado.posesion
 
+import com.gestionSupermercados.ConstVals
 import com.gestionSupermercados.producto.Producto
 import com.gestionSupermercados.producto.ProductoRepository
 import com.gestionSupermercados.producto.ProductoService
@@ -9,6 +10,7 @@ import com.gestionSupermercados.supermercado.SupermercadoService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class PosesionServiceTest {
 
@@ -31,13 +33,13 @@ class PosesionServiceTest {
 
     @Test
     fun addPosesionTest() {
-        val producto = Producto(1, "Carne", 10.0)
-        val supermercado = Supermercado(1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
+        val producto = Producto(ConstVals.testProducto1, "Carne", 10.0)
+        val supermercado = Supermercado(ConstVals.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
         productoService.addProducto(producto)
         supermercadoService.addSupermercado(supermercado)
 
-        posesionService.addPosesion(1, 1, 50)
-        val posesion = posesionRepository.getPosesionByProductoIdSupermercadoId(1, 1)
+        posesionService.addPosesion(ConstVals.testProducto1, ConstVals.testSupermercado1, 50)
+        val posesion = posesionRepository.getPosesionByProductoIdSupermercadoId(ConstVals.testProducto1, ConstVals.testSupermercado1)
 
         assertNotNull(posesion)
         assertEquals(50, posesion?.stock)
@@ -45,17 +47,17 @@ class PosesionServiceTest {
 
     @Test
     fun updatePosesionStockByProductoIdSupermercadoIdTest() {
-        val producto = Producto(1, "Carne", 10.0)
-        val supermercado = Supermercado(1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
+        val producto = Producto(ConstVals.testProducto1, "Carne", 10.0)
+        val supermercado = Supermercado(ConstVals.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
 
         productoService.addProducto(producto)
         supermercadoService.addSupermercado(supermercado)
 
-        posesionService.addPosesion(1, 1, 50)
+        posesionService.addPosesion(ConstVals.testProducto1, ConstVals.testSupermercado1, 50)
 
-        posesionService.updatePosesionStockByProductoIdSupermercadoId(1, 1, -20)
+        posesionService.updatePosesionStockByProductoIdSupermercadoId(ConstVals.testProducto1, ConstVals.testSupermercado1, -20)
 
-        val posesion = posesionRepository.getPosesionByProductoIdSupermercadoId(1, 1)
+        val posesion = posesionRepository.getPosesionByProductoIdSupermercadoId(ConstVals.testProducto1, ConstVals.testSupermercado1)
 
         assertNotNull(posesion)
         assertEquals(30, posesion?.stock)
@@ -63,23 +65,23 @@ class PosesionServiceTest {
 
     @Test
     fun getStockTest() {
-        val producto = Producto(1, "Carne", 10.0)
-        val supermercado = Supermercado(1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
+        val producto = Producto(ConstVals.testProducto1, "Carne", 10.0)
+        val supermercado = Supermercado(ConstVals.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
 
         productoService.addProducto(producto)
         supermercadoService.addSupermercado(supermercado)
 
-        posesionService.addPosesion(1, 1, 50)
+        posesionService.addPosesion(ConstVals.testProducto1, ConstVals.testSupermercado1, 50)
 
-        val stock = posesionService.getStock(1, 1)
+        val stock = posesionService.getStock(ConstVals.testProducto1, ConstVals.testSupermercado1)
 
         assertEquals(50, stock)
     }
 
     @Test
     fun addPosesionInvalidProductoOrSupermercadoTest() {
-        val invalidProductoId = 999L
-        val invalidSupermercadoId = 999L
+        val invalidProductoId = UUID.randomUUID()
+        val invalidSupermercadoId = UUID.randomUUID()
 
         val exception = assertThrows(IllegalArgumentException::class.java) {
             posesionService.addPosesion(invalidProductoId, invalidSupermercadoId, 50)

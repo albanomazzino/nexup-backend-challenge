@@ -3,13 +3,15 @@ package com.gestionSupermercados.productoSupermercado.venta
 import com.gestionSupermercados.productoSupermercado.posesion.PosesionService
 import com.gestionSupermercados.producto.ProductoService
 import java.time.LocalDateTime
+import java.util.*
 
 class VentaService (
     private val ventaRepository: VentaRepository,
     private val posesionService: PosesionService,
     private val productoService : ProductoService
 ) {
-    fun addVenta(productoId: Long, supermercadoId: Long, fecha: LocalDateTime, cantidad: Int) : Double {
+
+    fun addVenta(productoId: UUID, supermercadoId: UUID, fecha: LocalDateTime, cantidad: Int) : Double {
         val stockActual = posesionService.getStock(productoId, supermercadoId) ?: 0
 
         if (stockActual >= cantidad) {
@@ -29,11 +31,11 @@ class VentaService (
         }
     }
 
-    fun getCantidadVendidaByProductoIdSupermercadoId(productoId: Long, supermercadoId: Long): Int {
+    fun getCantidadVendidaByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Int {
         return ventaRepository.getVentasByProductoIdSupermercadoId(productoId, supermercadoId).sumOf { it.cantidad }
     }
 
-    fun getIngresosByProductoIdSupermercadoId(productoId: Long, supermercadoId: Long): Double {
+    fun getIngresosByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Double {
         val ventasProducto = ventaRepository.getVentasByProductoIdSupermercadoId(productoId, supermercadoId)
         val producto = productoService.getProductoById(productoId)
 
@@ -49,7 +51,7 @@ class VentaService (
         return ventaRepository.getAllVentas()
     }
 
-    fun getIngresosTotalesBySupermercadoId(supermercadoId: Long): Double {
+    fun getIngresosTotalesBySupermercadoId(supermercadoId: UUID): Double {
         val ventasSupermercado = ventaRepository.getAllVentas().filter { it.supermercadoId == supermercadoId }
         var ingresosTotales = 0.0
         for (venta in ventasSupermercado){

@@ -2,13 +2,14 @@ package com.gestionSupermercados.cadenaSupermercados
 
 import com.gestionSupermercados.producto.ProductoService
 import com.gestionSupermercados.productoSupermercado.venta.VentaService
+import java.util.*
 
 class CadenaSupermercadosService(
     private val cadenaSupermercadosRepository: CadenaSupermercadosRepository,
     private val ventaService: VentaService,
     private val productoService: ProductoService
 ) {
-    fun getCincoProductosMasVendidos(cadenaSupermercadosId : Long): String {
+    fun getCincoProductosMasVendidos(cadenaSupermercadosId : UUID): String {
         // 0. Obtener los IDs de los supermercados de la cadena
         val supermercadosCadenaIDs = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId).map { it.id }
 
@@ -36,7 +37,7 @@ class CadenaSupermercadosService(
         }
     }
 
-    fun getIngresosTotalesSupermercados(cadenaSupermercadosId : Long): Double {
+    fun getIngresosTotalesSupermercados(cadenaSupermercadosId : UUID): Double {
         var ingresosTotales = 0.0
 
         // 0. Obtener los IDs de los supermercados de la cadena
@@ -59,7 +60,8 @@ class CadenaSupermercadosService(
         return ingresosTotales
     }
 
-    fun getSupermercadoMayoresIngresos(cadenaSupermercadosId : Long): String {
+
+    fun getSupermercadoMayoresIngresos(cadenaSupermercadosId : UUID): String {
         val supermercadosCadena = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId)
         val ventasCadenaSupermercados = ventaService.getAllVentas().filter { it.supermercadoId in supermercadosCadena.map { supermercado -> supermercado.id } }
 
