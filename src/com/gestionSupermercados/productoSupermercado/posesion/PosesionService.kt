@@ -1,0 +1,30 @@
+package com.gestionSupermercados.productoSupermercado.posesion
+
+import com.gestionSupermercados.producto.ProductoService
+import com.gestionSupermercados.supermercado.SupermercadoService
+
+class PosesionService(
+    private val posesionRepository: PosesionRepository,
+    private val productoService: ProductoService,
+    private val supermercadoService: SupermercadoService
+) {
+    fun addPosesion(productoId: Long, supermercadoId: Long, stock: Int) {
+        val producto = productoService.getProductoById(productoId)
+        val supermercado = supermercadoService.getSupermercadoById(supermercadoId)
+        if (producto != null && supermercado != null) {
+            posesionRepository.addPosesion(
+                Posesion(productoId, supermercadoId, stock)
+            )
+        } else {
+            throw IllegalArgumentException("Producto o supermercado no encontrado.")
+        }
+    }
+
+    fun updatePosesionStockByProductoIdSupermercadoId(productoId: Long, supermercadoId: Long, cantidad : Int) {
+        posesionRepository.updatePosesionStockByProductoIdSupermercadoId(productoId, supermercadoId, cantidad)
+    }
+
+    fun getStock(productoId: Long, supermercadoId: Long): Int? {
+        return posesionRepository.getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)?.stock
+    }
+}
