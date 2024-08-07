@@ -1,6 +1,7 @@
 package com.gestionSupermercados.cadenaSupermercados
 
 import com.gestionSupermercados.supermercado.Supermercado
+import java.util.*
 
 class CadenaSupermercadosRepository {
     private val cadenaSupermercados = mutableListOf<CadenaSupermercados>()
@@ -9,11 +10,11 @@ class CadenaSupermercadosRepository {
         this.cadenaSupermercados.add(cadenaSupermercados)
     }
 
-    fun getAllSupermercadosCadena(idCadenaSupermercados: Long) : List<Supermercado> {
+    fun getAllSupermercadosCadena(idCadenaSupermercados: UUID) : List<Supermercado> {
         return getCadenaSupermercadosById(idCadenaSupermercados).supermercados
     }
 
-    fun getCadenaSupermercadosById(id : Long) : CadenaSupermercados {
+    fun getCadenaSupermercadosById(id : UUID) : CadenaSupermercados {
         val cadenaSupermercados = cadenaSupermercados.find { it.id == id }
         if (cadenaSupermercados != null){
             return cadenaSupermercados
@@ -23,12 +24,12 @@ class CadenaSupermercadosRepository {
         }
     }
 
-    fun getAllSupermercadosAbiertos(cadenaSupermercadosId : Long, hora: Int, dia :String) : List<Supermercado> {
+    fun getAllSupermercadosAbiertos(cadenaSupermercadosId : UUID, hora: Int, dia :String) : List<Supermercado> {
         val supermercadosCadena = getAllSupermercadosCadena(cadenaSupermercadosId)
         return supermercadosCadena.filter { it.horarioApertura <= hora && hora <= it.horarioCierre && it.diasAbierto.contains(dia) }
     }
 
-    fun addSupermercado(cadenaSupermercadosId : Long, supermercado : Supermercado) {
+    fun addSupermercado(cadenaSupermercadosId : UUID, supermercado : Supermercado) {
         getCadenaSupermercadosById(cadenaSupermercadosId).supermercados.add(supermercado)
     }
 }

@@ -1,9 +1,11 @@
 package com.gestionSupermercados.supermercado
 
+import java.util.*
+
 class SupermercadoRepository {
     val supermercados = mutableListOf<Supermercado>()
 
-    fun getSupermercadoById(id : Long) : Supermercado?{
+    fun getSupermercadoById(id : UUID) : Supermercado?{
         return supermercados.find { it.id == id }
     }
 

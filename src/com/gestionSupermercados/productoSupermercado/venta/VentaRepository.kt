@@ -1,21 +1,20 @@
 package com.gestionSupermercados.productoSupermercado.venta
 
 import java.time.LocalDateTime
+import java.util.*
 
 class VentaRepository {
     private val ventas = mutableListOf<Venta>()
-    private var lastId = 1L
 
-    fun getVentasByProductoIdSupermercadoId (idProducto : Long, supermercadoId: Long) : List<Venta> {
-        return ventas.filter { it.productoId == idProducto && it.supermercadoId == supermercadoId }
+    fun getVentasByProductoIdSupermercadoId (productoId : UUID, supermercadoId: UUID) : List<Venta> {
+        return ventas.filter { it.productoId == productoId && it.supermercadoId == supermercadoId }
     }
 
     fun getAllVentas () : List<Venta> {
         return ventas
     }
 
-    fun addVenta (productoId: Long, supermercadoId: Long, fecha: LocalDateTime, cantidad: Int){
-        ventas.add(Venta(lastId, productoId, supermercadoId, fecha, cantidad))
-        lastId++
+    fun addVenta (productoId: UUID, supermercadoId: UUID, fecha: LocalDateTime, cantidad: Int){
+        ventas.add(Venta(UUID.randomUUID(), productoId, supermercadoId, fecha, cantidad))
     }
 }

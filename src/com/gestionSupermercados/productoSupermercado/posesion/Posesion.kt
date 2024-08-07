@@ -1,7 +1,9 @@
 package com.gestionSupermercados.productoSupermercado.posesion
 
+import java.util.UUID
+
 data class Posesion (
-    val productoId : Long,
-    val supermercadoId : Long,
+    val productoId : UUID,
+    val supermercadoId : UUID,
     var stock : Int
 )

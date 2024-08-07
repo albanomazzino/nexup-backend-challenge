@@ -7,32 +7,35 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 
-class SupermercadoRepositoryTest {
+class SupermercadoServiceTest {
+    private lateinit var supermercadoService: SupermercadoService
     private lateinit var supermercadoRepository: SupermercadoRepository
 
     @BeforeEach
     fun setUp() {
         supermercadoRepository = SupermercadoRepository()
+        supermercadoService = SupermercadoService(supermercadoRepository)
     }
 
     @Test
     fun addSupermercadoTest() {
-        val supermercado = Supermercado(ConstVals.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
-        supermercadoRepository.addSupermercado(supermercado)
+        val supermercadoAgregado = Supermercado(ConstVals.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
+        supermercadoService.addSupermercado(supermercadoAgregado)
 
-        val supermercadoEncontrado = supermercadoRepository.getSupermercadoById(ConstVals.testSupermercado1)
-        assertEquals(supermercado, supermercadoEncontrado)
+        val supermercadoEncontrado = supermercadoService.getSupermercadoById(ConstVals.testSupermercado1)
+        assertEquals(supermercadoAgregado, supermercadoEncontrado)
     }
 
     @Test
     fun getSupermercadoByIdTest() {
         val supermercado1 = Supermercado(ConstVals.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
         val supermercado2 = Supermercado(ConstVals.testSupermercado2, "Supermercado B", 15, 22, listOf("Jueves", "Viernes"))
-        supermercadoRepository.addSupermercado(supermercado1)
-        supermercadoRepository.addSupermercado(supermercado2)
 
-        val supermercadoEncontrado1 = supermercadoRepository.getSupermercadoById(ConstVals.testSupermercado1)
-        val supermercadoEncontrado2 = supermercadoRepository.getSupermercadoById(ConstVals.testSupermercado2)
+        supermercadoService.addSupermercado(supermercado1)
+        supermercadoService.addSupermercado(supermercado2)
+
+        val supermercadoEncontrado1 = supermercadoService.getSupermercadoById(ConstVals.testSupermercado1)
+        val supermercadoEncontrado2 = supermercadoService.getSupermercadoById(ConstVals.testSupermercado2)
 
         assertEquals(supermercado1, supermercadoEncontrado1)
         assertEquals(supermercado2, supermercadoEncontrado2)
@@ -40,7 +43,7 @@ class SupermercadoRepositoryTest {
 
     @Test
     fun getSupermercadoByIdWithNoOccurrencesTest() {
-        val supermercadoEncontrado = supermercadoRepository.getSupermercadoById(UUID.randomUUID())
+        val supermercadoEncontrado = supermercadoService.getSupermercadoById(UUID.randomUUID())
 
         assertNull(supermercadoEncontrado)
     }

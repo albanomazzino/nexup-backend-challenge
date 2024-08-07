@@ -1,11 +1,11 @@
 package com.gestionSupermercados.productoSupermercado.posesion
 
-import com.gestionSupermercados.producto.Producto
+import java.util.*
 
 class PosesionRepository {
     private val productosSupermercado = mutableListOf<Posesion>()
 
-    fun getPosesionByProductoIdSupermercadoId(productoId : Long, supermercadoId: Long) : Posesion? {
+    fun getPosesionByProductoIdSupermercadoId(productoId : UUID, supermercadoId: UUID) : Posesion? {
         return productosSupermercado.find { it.productoId == productoId && it.supermercadoId == supermercadoId}
     }
 
@@ -13,7 +13,7 @@ class PosesionRepository {
         productosSupermercado.add(posesion)
     }
 
-    fun updatePosesionStockByProductoIdSupermercadoId(productoId : Long, supermercadoId : Long, difference : Int) {
+    fun updatePosesionStockByProductoIdSupermercadoId(productoId : UUID, supermercadoId : UUID, difference : Int) {
         val posesionAModificar : Posesion? = getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)
         if (posesionAModificar != null) posesionAModificar.stock += difference
     }
