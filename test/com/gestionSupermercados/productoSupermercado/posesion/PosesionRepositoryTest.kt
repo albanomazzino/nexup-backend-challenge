@@ -21,7 +21,9 @@ class PosesionRepositoryTest {
         val addedPosesion = posesionRepository.getPosesionByProductoIdSupermercadoId(1, 1)
 
         assertNotNull(addedPosesion)
-        assertEquals(productoSupermercado, addedPosesion)
+        assertEquals(addedPosesion?.productoId, 1)
+        assertEquals(addedPosesion?.supermercadoId, 1)
+        assertEquals(addedPosesion?.stock, 100)
     }
 
     @Test
