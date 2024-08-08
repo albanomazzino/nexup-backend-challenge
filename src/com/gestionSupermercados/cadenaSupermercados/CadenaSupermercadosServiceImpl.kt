@@ -16,7 +16,8 @@ interface CadenaSupermercadosService {
 class CadenaSupermercadosServiceImpl(
     private val cadenaSupermercadosRepository: CadenaSupermercadosRepository,
     private val ventaService: VentaService,
-    private val productoService: ProductoService
+    private val productoService: ProductoService,
+    private val outputFormatter: CadenaSupermercadosOutputFormatter
 ) : CadenaSupermercadosService {
     /*
         0. Obtener los IDs de los supermercados de la cadena
@@ -37,7 +38,7 @@ class CadenaSupermercadosServiceImpl(
         val cantidadVentasPorProductoEnOrden = ordenarProductosPorCantidad(cantidadVentasPorProducto)
         val top5ProductosMasVendidos = getTopNProductos(cantidadVentasPorProductoEnOrden, 5)
 
-        return formatTopProductos(top5ProductosMasVendidos)
+        return outputFormatter.formatTopProductos(top5ProductosMasVendidos)
     }
 
     /*
@@ -64,7 +65,7 @@ class CadenaSupermercadosServiceImpl(
         return if (supermercadoConMasIngresos == null) {
             "No hay ventas registradas para la cadena de supermercados $cadenaSupermercadosId."
         } else {
-            formatSupermercadoConMasIngresos(supermercadoConMasIngresos.key, supermercadoConMasIngresos.value, supermercadosCadena)
+            outputFormatter.formatSupermercadoConMasIngresos(supermercadoConMasIngresos.key, supermercadoConMasIngresos.value, supermercadosCadena)
         }
     }
 
@@ -74,7 +75,7 @@ class CadenaSupermercadosServiceImpl(
         return if (supermercadosAbiertos.isNullOrEmpty())
             "No se encontraron supermercados abiertos."
         else
-            formatSupermercadosAbiertos(supermercadosAbiertos)
+            outputFormatter.formatSupermercadosAbiertos(supermercadosAbiertos)
     }
 
     private fun getSupermercadosAbiertos(cadenaSupermercadosId: UUID, hora: Int, dia: String): List<Supermercado>? {
@@ -113,13 +114,6 @@ class CadenaSupermercadosServiceImpl(
         return cantidadVentasPorProductoEnOrden.take(topN)
     }
 
-    private fun formatTopProductos(topProductos: List<Map.Entry<UUID, Int>>): String {
-        return topProductos.joinToString("-") { (productoId, cantidadVendida) ->
-            val producto = productoService.getProductoById(productoId)
-            "${producto.nombre}: $cantidadVendida"
-        }
-    }
-
     private fun calcularIngresos(cantidadVentasPorProducto: Map<UUID, Int>): Double {
         var ingresosTotales = 0.0
         for ((productoId, cantidadVendida) in cantidadVentasPorProducto) {
@@ -146,14 +140,5 @@ class CadenaSupermercadosServiceImpl(
 
     private fun getSupermercadoConMasIngresos(ingresosPorSupermercado: Map<UUID, Double>): Map.Entry<UUID, Double>? {
         return ingresosPorSupermercado.maxByOrNull { it.value }
-    }
-
-    private fun formatSupermercadoConMasIngresos(supermercadoId: UUID, ingresos: Double, supermercadosCadena: List<Supermercado>): String {
-        val supermercado = supermercadosCadena.find { it.id == supermercadoId }
-        return "${supermercado?.nombre} (${supermercado?.id}). Ingresos totales: $ingresos"
-    }
-
-    private fun formatSupermercadosAbiertos(supermercadosAbiertos: List<Supermercado>): String {
-        return supermercadosAbiertos.joinToString(", ") { "${it.nombre} (${it.id})" }
     }
 }

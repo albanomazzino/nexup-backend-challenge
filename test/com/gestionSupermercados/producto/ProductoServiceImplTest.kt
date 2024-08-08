@@ -4,21 +4,28 @@ import com.gestionSupermercados.ConstantValues
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.*
 import java.util.*
 
 class ProductoServiceImplTest {
-    private lateinit var productoService: ProductoServiceImpl
-    private lateinit var productoRepository: ProductoRepositoryImpl
+    private lateinit var productoService: ProductoService
+    private lateinit var productoRepository: ProductoRepository
 
     @BeforeEach
     fun setUp() {
-        productoRepository = ProductoRepositoryImpl()
+        productoRepository = mock(ProductoRepository::class.java)
         productoService = ProductoServiceImpl(productoRepository)
     }
 
     @Test
     fun addProductoTest() {
         val producto = Producto(ConstantValues.testProducto1, "Carne", 10.0)
+
+        `when`(productoRepository.getProductoById(ConstantValues.testProducto1))
+            .thenReturn(producto)
+        doNothing().`when`(productoRepository).addProducto(producto)
+
         productoService.addProducto(producto)
 
         val productoEncontrado = productoService.getProductoById(ConstantValues.testProducto1)
@@ -32,6 +39,11 @@ class ProductoServiceImplTest {
         val producto2 = Producto(ConstantValues.testProducto2, "Pescado", 20.0)
         productoService.addProducto(producto1)
         productoService.addProducto(producto2)
+
+        `when`(productoRepository.getProductoById(ConstantValues.testProducto1))
+            .thenReturn(producto1)
+        `when`(productoRepository.getProductoById(ConstantValues.testProducto2))
+            .thenReturn(producto2)
 
         val productoEncontrado1 = productoService.getProductoById(ConstantValues.testProducto1)
         val productoEncontrado2 = productoService.getProductoById(ConstantValues.testProducto2)

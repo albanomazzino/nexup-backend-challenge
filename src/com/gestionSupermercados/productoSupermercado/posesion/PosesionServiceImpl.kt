@@ -21,14 +21,8 @@ class PosesionServiceImpl(private val posesionRepository: PosesionRepository) : 
     }
 
     override fun getStock(productoId: UUID, supermercadoId: UUID): Int {
-        val posesion = posesionRepository.getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)
-
-        if (posesion != null){
-            return posesion.stock
-        }
-        else {
-            throw IllegalArgumentException("Producto o supermercado no encontrado.")
-        }
+        val posesion = getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)
+        return posesion.stock
     }
 
     private fun getPosesionByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Posesion {
