@@ -23,7 +23,7 @@ class CadenaSupermercadosService(
         }
 
         // 2. Mapear las ventas para acumular la cantidad total vendida por producto
-        var cantidadVentasPorProducto = ventasCadenaSupermercados.groupBy { it.productoId }
+        val cantidadVentasPorProducto = ventasCadenaSupermercados.groupBy { it.productoId }
             .mapValues { ventaActual -> ventaActual.value.sumOf { it.cantidad } }
 
         // 3. Ordenar el mapa de productos por la cantidad vendida en orden descendente
@@ -35,7 +35,7 @@ class CadenaSupermercadosService(
         // 5. Formatear y devolver el resultado
         return top5ProductosMasVendidos.joinToString("-") { (productoId, cantidadVendida) ->
             val producto = productoService.getProductoById(productoId)
-            "${producto?.nombre}: $cantidadVendida"
+            "${producto.nombre}: $cantidadVendida"
         }
     }
 
@@ -58,13 +58,12 @@ class CadenaSupermercadosService(
         // 3. Obtener el precio de cada producto y calcular los ingresos totales
         for ((productoId, cantidadVendida) in cantidadVentasPorProducto) {
             val productoActual = productoService.getProductoById(productoId)
-            val precioProductoActual = productoActual?.precio ?: 0.0
+            val precioProductoActual = productoActual.precio
             ingresosTotales += precioProductoActual * cantidadVendida
         }
 
         return ingresosTotales
     }
-
 
     fun getSupermercadoMayoresIngresos(cadenaSupermercadosId : UUID): String {
         val supermercadosCadena = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId)
@@ -82,13 +81,7 @@ class CadenaSupermercadosService(
                         val totalCantidadVendida = ventasProductoActual.value.sumOf { it.cantidad }
                         // Obtener el precio del producto una vez
                         val productoActual = productoService.getProductoById(ventasProductoActual.key)
-                        val productoActualPrecio: Double
-                        if (productoActual != null){
-                            productoActualPrecio = productoActual.precio
-                        }
-                        else {
-                            throw IllegalArgumentException("Hubo un error al buscar un producto entre las ventas de la cadena $cadenaSupermercadosId.")
-                        }
+                        val productoActualPrecio = productoActual.precio
                         // Calcular los ingresos por producto
                         totalCantidadVendida * productoActualPrecio
                     }
@@ -103,5 +96,14 @@ class CadenaSupermercadosService(
         } else {
             "No hay ventas registradas para la cadena de supermercados $cadenaSupermercadosId."
         }
+    }
+
+    fun getAllSupermercadosAbiertos(cadenaSupermercadosId: UUID, hora : Int, dia : String) : String {
+        val supermercadosAbiertos = cadenaSupermercadosRepository.getAllSupermercadosAbiertos(cadenaSupermercadosId, hora, dia)
+
+        return if (supermercadosAbiertos.isNullOrEmpty())
+            "No se encontraron supermercados abiertos."
+        else
+            supermercadosAbiertos.joinToString(", ") { "${it.nombre} (${it.id})" }
     }
 }
