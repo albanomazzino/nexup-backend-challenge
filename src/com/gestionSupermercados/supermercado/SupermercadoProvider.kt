@@ -6,6 +6,6 @@ object SupermercadoProvider {
     }
 
     fun getSupermercadoService(): SupermercadoService {
-        return SupermercadoService(supermercadoRepository)
+        return SupermercadoServiceImpl(supermercadoRepository)
     }
 }

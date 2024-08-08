@@ -6,14 +6,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 
-class SupermercadoServiceTest {
-    private lateinit var supermercadoService: SupermercadoService
+class SupermercadoServiceImplTest {
+    private lateinit var supermercadoService: SupermercadoServiceImpl
     private lateinit var supermercadoRepository: SupermercadoRepositoryImpl
 
     @BeforeEach
     fun setUp() {
         supermercadoRepository = SupermercadoRepositoryImpl()
-        supermercadoService = SupermercadoService(supermercadoRepository)
+        supermercadoService = SupermercadoServiceImpl(supermercadoRepository)
     }
 
     @Test

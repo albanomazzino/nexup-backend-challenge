@@ -9,7 +9,7 @@ object VentaProvider {
         val posesionService = PosesionProvider.getPosesionService()
         val productoService = ProductoProvider.getProductoService()
 
-        return VentaService(ventaRepository, posesionService, productoService)
+        return VentaServiceImpl(ventaRepository, posesionService, productoService)
     }
 
     private fun getVentaRepository() : VentaRepository{

@@ -4,22 +4,22 @@ import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.producto.Producto
 import com.gestionSupermercados.producto.ProductoRepository
 import com.gestionSupermercados.producto.ProductoRepositoryImpl
-import com.gestionSupermercados.producto.ProductoService
+import com.gestionSupermercados.producto.ProductoServiceImpl
 import com.gestionSupermercados.supermercado.Supermercado
 import com.gestionSupermercados.supermercado.SupermercadoRepositoryImpl
-import com.gestionSupermercados.supermercado.SupermercadoService
+import com.gestionSupermercados.supermercado.SupermercadoServiceImpl
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.util.*
 
-class PosesionServiceTest {
+class PosesionServiceImplTest {
 
-    private lateinit var posesionService: PosesionService
+    private lateinit var posesionService: PosesionServiceImpl
     private lateinit var posesionRepository: PosesionRepositoryImpl
-    private lateinit var productoService: ProductoService
-    private lateinit var supermercadoService: SupermercadoService
+    private lateinit var productoService: ProductoServiceImpl
+    private lateinit var supermercadoService: SupermercadoServiceImpl
     private lateinit var productoRepository: ProductoRepository
     private lateinit var supermercadoRepository: SupermercadoRepositoryImpl
 
@@ -28,9 +28,9 @@ class PosesionServiceTest {
         posesionRepository = PosesionRepositoryImpl()
         productoRepository = ProductoRepositoryImpl()
         supermercadoRepository = SupermercadoRepositoryImpl()
-        productoService = ProductoService(productoRepository)
-        supermercadoService = SupermercadoService(supermercadoRepository)
-        posesionService = PosesionService(posesionRepository)
+        productoService = ProductoServiceImpl(productoRepository)
+        supermercadoService = SupermercadoServiceImpl(supermercadoRepository)
+        posesionService = PosesionServiceImpl(posesionRepository)
     }
 
     @Test

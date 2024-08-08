@@ -9,7 +9,7 @@ object CadenaSupermercadosProvider {
         val ventaService = VentaProvider.getVentaService()
         val productoService = ProductoProvider.getProductoService()
 
-        return CadenaSupermercadosService(cadenaSupermercadosRepository, ventaService, productoService)
+        return CadenaSupermercadosServiceImpl(cadenaSupermercadosRepository, ventaService, productoService)
     }
 
     private fun getCadenaSupermercadosRepository(): CadenaSupermercadosRepository {

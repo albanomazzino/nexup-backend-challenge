@@ -6,6 +6,6 @@ object PosesionProvider {
     }
 
     fun getPosesionService(): PosesionService {
-        return PosesionService(posesionRepository)
+        return PosesionServiceImpl(posesionRepository)
     }
 }
