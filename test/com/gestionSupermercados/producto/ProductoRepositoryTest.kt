@@ -1,9 +1,10 @@
 package com.gestionSupermercados.producto
 
-import com.gestionSupermercados.ConstVals
+import com.gestionSupermercados.ConstantValues
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class ProductoRepositoryTest {
 
@@ -15,11 +16,18 @@ class ProductoRepositoryTest {
     }
 
     @Test
+    fun getProductoWithNoOccurrencesTest() {
+        val addedProducto = productoRepository.getProductoById(UUID.randomUUID())
+
+        assertNull(addedProducto)
+    }
+
+    @Test
     fun addProductoTest() {
-        val producto = Producto(ConstVals.testProducto1, "Carne", 10.0)
+        val producto = Producto(ConstantValues.testProducto1, "Carne", 10.0)
         productoRepository.addProducto(producto)
 
-        val addedProducto = productoRepository.getProductoById(ConstVals.testProducto1)
+        val addedProducto = productoRepository.getProductoById(ConstantValues.testProducto1)
 
         assertNotNull(addedProducto)
         assertEquals(producto, addedProducto)

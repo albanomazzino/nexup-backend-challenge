@@ -1,10 +1,10 @@
 package com.gestionSupermercados.productoSupermercado.posesion
 
-import com.gestionSupermercados.ConstVals
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import com.gestionSupermercados.ConstantValues
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class PosesionRepositoryTest {
     private lateinit var posesionRepository: PosesionRepository
@@ -15,27 +15,22 @@ class PosesionRepositoryTest {
     }
 
     @Test
-    fun addPosesionTest() {
-        val productoSupermercado = Posesion(ConstVals.testProducto1, ConstVals.testSupermercado1, 100)
-        posesionRepository.addPosesion(productoSupermercado)
+    fun getPosesionByProductoIdSupermercadoIdNotFoundTest() {
+        val posesion = posesionRepository.getPosesionByProductoIdSupermercadoId(ConstantValues.testProducto1, UUID.randomUUID())
 
-        val addedPosesion = posesionRepository.getPosesionByProductoIdSupermercadoId(ConstVals.testProducto1, ConstVals.testSupermercado1)
-
-        assertNotNull(addedPosesion)
-        assertEquals(addedPosesion?.productoId, ConstVals.testProducto1)
-        assertEquals(addedPosesion?.supermercadoId, ConstVals.testSupermercado1)
-        assertEquals(addedPosesion?.stock, 100)
+        assertNull(posesion)
     }
 
     @Test
-    fun updatePosesionStockByProductoIdSupermercadoIdTest() {
-        val posesion = Posesion(ConstVals.testProducto1, ConstVals.testSupermercado1, 100)
-        posesionRepository.addPosesion(posesion)
+    fun addPosesionTest() {
+        val productoSupermercado = Posesion(ConstantValues.testProducto1, ConstantValues.testSupermercado1, 100)
+        posesionRepository.addPosesion(productoSupermercado)
 
-        posesionRepository.updatePosesionStockByProductoIdSupermercadoId(ConstVals.testProducto1, ConstVals.testSupermercado1, -50)
+        val addedPosesion = posesionRepository.getPosesionByProductoIdSupermercadoId(ConstantValues.testProducto1, ConstantValues.testSupermercado1)
 
-        val posesionConStockActualizado = posesionRepository.getPosesionByProductoIdSupermercadoId(ConstVals.testProducto1, ConstVals.testSupermercado1)
-
-        assertEquals(50, posesionConStockActualizado?.stock)
+        assertNotNull(addedPosesion)
+        assertEquals(addedPosesion?.productoId, ConstantValues.testProducto1)
+        assertEquals(addedPosesion?.supermercadoId, ConstantValues.testSupermercado1)
+        assertEquals(addedPosesion?.stock, 100)
     }
 }

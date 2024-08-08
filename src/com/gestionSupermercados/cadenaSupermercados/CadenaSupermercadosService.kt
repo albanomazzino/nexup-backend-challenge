@@ -11,7 +11,9 @@ class CadenaSupermercadosService(
 ) {
     fun getCincoProductosMasVendidos(cadenaSupermercadosId : UUID): String {
         // 0. Obtener los IDs de los supermercados de la cadena
-        val supermercadosCadenaIDs = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId).map { it.id }
+        val supermercadosCadena = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId)
+            ?: throw IllegalArgumentException("Cadena de supermercados no encontrada.")
+        val supermercadosCadenaIDs = supermercadosCadena.map { it.id }
 
         // 1. Filtrar las ventas que corresponden a estos supermercados
         val ventasCadenaSupermercados = ventaService.getAllVentas().filter { it.supermercadoId in supermercadosCadenaIDs }
@@ -38,10 +40,13 @@ class CadenaSupermercadosService(
     }
 
     fun getIngresosTotalesSupermercados(cadenaSupermercadosId : UUID): Double {
+        val supermercadosCadena = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId)
+            ?: throw IllegalArgumentException("Cadena de supermercados no encontrada.")
+
         var ingresosTotales = 0.0
 
         // 0. Obtener los IDs de los supermercados de la cadena
-        val supermercadosCadenaIDs = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId).map { it.id }
+        val supermercadosCadenaIDs = supermercadosCadena.map { it.id }
 
         // 1. Filtrar las ventas que corresponden a estos supermercados
         val ventasCadenaSupermercados = ventaService.getAllVentas().filter { it.supermercadoId in supermercadosCadenaIDs }
@@ -63,6 +68,8 @@ class CadenaSupermercadosService(
 
     fun getSupermercadoMayoresIngresos(cadenaSupermercadosId : UUID): String {
         val supermercadosCadena = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId)
+            ?: throw IllegalArgumentException("Cadena de supermercados no encontrada.")
+
         val ventasCadenaSupermercados = ventaService.getAllVentas().filter { it.supermercadoId in supermercadosCadena.map { supermercado -> supermercado.id } }
 
         // Agrupar por supermercadoId
@@ -75,7 +82,7 @@ class CadenaSupermercadosService(
                         val totalCantidadVendida = ventasProductoActual.value.sumOf { it.cantidad }
                         // Obtener el precio del producto una vez
                         val productoActual = productoService.getProductoById(ventasProductoActual.key)
-                        var productoActualPrecio = 0.0
+                        val productoActualPrecio: Double
                         if (productoActual != null){
                             productoActualPrecio = productoActual.precio
                         }
