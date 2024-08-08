@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.util.*
 
-class CadenaSupermercadosRepositoryTest {
+class CadenaSupermercadosRepositoryImplTest {
 
-    private lateinit var cadenaSupermercadosRepository: CadenaSupermercadosRepository
+    private lateinit var cadenaSupermercadosRepository: CadenaSupermercadosRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        cadenaSupermercadosRepository = CadenaSupermercadosRepository()
+        cadenaSupermercadosRepository = CadenaSupermercadosRepositoryImpl()
         val cadena1 = CadenaSupermercados(ConstantValues.testCadena1, "Cadena A", mutableListOf())
         val cadena2 = CadenaSupermercados(ConstantValues.testCadena2, "Cadena B", mutableListOf())
         cadenaSupermercadosRepository.addCadenaSupermercados(cadena1)

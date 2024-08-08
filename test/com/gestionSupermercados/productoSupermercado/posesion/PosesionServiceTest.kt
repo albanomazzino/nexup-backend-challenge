@@ -3,9 +3,10 @@ package com.gestionSupermercados.productoSupermercado.posesion
 import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.producto.Producto
 import com.gestionSupermercados.producto.ProductoRepository
+import com.gestionSupermercados.producto.ProductoRepositoryImpl
 import com.gestionSupermercados.producto.ProductoService
 import com.gestionSupermercados.supermercado.Supermercado
-import com.gestionSupermercados.supermercado.SupermercadoRepository
+import com.gestionSupermercados.supermercado.SupermercadoRepositoryImpl
 import com.gestionSupermercados.supermercado.SupermercadoService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -16,17 +17,17 @@ import java.util.*
 class PosesionServiceTest {
 
     private lateinit var posesionService: PosesionService
-    private lateinit var posesionRepository: PosesionRepository
+    private lateinit var posesionRepository: PosesionRepositoryImpl
     private lateinit var productoService: ProductoService
     private lateinit var supermercadoService: SupermercadoService
     private lateinit var productoRepository: ProductoRepository
-    private lateinit var supermercadoRepository: SupermercadoRepository
+    private lateinit var supermercadoRepository: SupermercadoRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        posesionRepository = PosesionRepository()
-        productoRepository = ProductoRepository()
-        supermercadoRepository = SupermercadoRepository()
+        posesionRepository = PosesionRepositoryImpl()
+        productoRepository = ProductoRepositoryImpl()
+        supermercadoRepository = SupermercadoRepositoryImpl()
         productoService = ProductoService(productoRepository)
         supermercadoService = SupermercadoService(supermercadoRepository)
         posesionService = PosesionService(posesionRepository)
