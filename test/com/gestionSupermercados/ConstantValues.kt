@@ -2,7 +2,7 @@ package com.gestionSupermercados
 
 import java.util.UUID
 
-class ConstVals {
+class ConstantValues {
     companion object {
         val testCadena1: UUID = UUID.randomUUID()
         val testCadena2: UUID = UUID.randomUUID()

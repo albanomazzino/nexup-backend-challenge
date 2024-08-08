@@ -7,7 +7,8 @@ class SupermercadoService (private val supermercadoRepository : SupermercadoRepo
         supermercadoRepository.addSupermercado(supermercado)
     }
 
-    fun getSupermercadoById(id: UUID): Supermercado? {
+    fun getSupermercadoById(id: UUID): Supermercado {
         return supermercadoRepository.getSupermercadoById(id)
+            ?: throw NoSuchElementException("Supermercado con ID $id no encontrado.")
     }
 }

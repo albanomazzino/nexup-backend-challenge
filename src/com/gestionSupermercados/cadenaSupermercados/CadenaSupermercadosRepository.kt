@@ -10,26 +10,25 @@ class CadenaSupermercadosRepository {
         this.cadenaSupermercados.add(cadenaSupermercados)
     }
 
-    fun getAllSupermercadosCadena(idCadenaSupermercados: UUID) : List<Supermercado> {
-        return getCadenaSupermercadosById(idCadenaSupermercados).supermercados
+    fun getAllSupermercadosCadena(idCadenaSupermercados: UUID) : List<Supermercado>? {
+        return getCadenaSupermercadosById(idCadenaSupermercados)?.supermercados
     }
 
-    fun getCadenaSupermercadosById(id : UUID) : CadenaSupermercados {
-        val cadenaSupermercados = cadenaSupermercados.find { it.id == id }
-        if (cadenaSupermercados != null){
-            return cadenaSupermercados
-        }
-        else {
-            throw IllegalArgumentException ("No se encontró una cadena de supermercados con el id $id.")
-        }
+    fun getCadenaSupermercadosById(id : UUID) : CadenaSupermercados? {
+        return cadenaSupermercados.find { it.id == id }
     }
 
-    fun getAllSupermercadosAbiertos(cadenaSupermercadosId : UUID, hora: Int, dia :String) : List<Supermercado> {
+    fun getAllSupermercadosAbiertos(cadenaSupermercadosId : UUID, hora: Int, dia :String) : List<Supermercado>? {
         val supermercadosCadena = getAllSupermercadosCadena(cadenaSupermercadosId)
-        return supermercadosCadena.filter { it.horarioApertura <= hora && hora <= it.horarioCierre && it.diasAbierto.contains(dia) }
+        return supermercadosCadena?.filter { it.horarioApertura <= hora && hora <= it.horarioCierre && it.diasAbierto.contains(dia) }
     }
 
-    fun addSupermercado(cadenaSupermercadosId : UUID, supermercado : Supermercado) {
-        getCadenaSupermercadosById(cadenaSupermercadosId).supermercados.add(supermercado)
+    fun addSupermercado(cadenaSupermercadosId: UUID, supermercado: Supermercado) {
+        val cadenaSupermercados = getCadenaSupermercadosById(cadenaSupermercadosId)
+        if (cadenaSupermercados != null) {
+            cadenaSupermercados.supermercados.add(supermercado)
+        } else {
+            throw IllegalArgumentException("Cadena de supermercados no encontrada.")
+        }
     }
 }

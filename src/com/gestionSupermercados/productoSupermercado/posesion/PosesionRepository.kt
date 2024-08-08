@@ -12,9 +12,4 @@ class PosesionRepository {
     fun addPosesion(posesion : Posesion) {
         productosSupermercado.add(posesion)
     }
-
-    fun updatePosesionStockByProductoIdSupermercadoId(productoId : UUID, supermercadoId : UUID, difference : Int) {
-        val posesionAModificar : Posesion? = getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)
-        if (posesionAModificar != null) posesionAModificar.stock += difference
-    }
 }

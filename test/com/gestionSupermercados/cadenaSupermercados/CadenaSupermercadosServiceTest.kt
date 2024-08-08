@@ -1,6 +1,6 @@
 package com.gestionSupermercados.cadenaSupermercados
 
-import com.gestionSupermercados.ConstVals
+import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.producto.Producto
 import com.gestionSupermercados.producto.ProductoRepository
 import com.gestionSupermercados.producto.ProductoService
@@ -39,16 +39,16 @@ class CadenaSupermercadosServiceTest {
         posesionRepository = PosesionRepository()
         productoService = ProductoService(productoRepository)
         supermercadoService = SupermercadoService(supermercadoRepository)
-        posesionService = PosesionService(posesionRepository, productoService, supermercadoService)
+        posesionService = PosesionService(posesionRepository)
         ventaService = VentaService(ventaRepository, posesionService, productoService)
         cadenaSupermercadosService = CadenaSupermercadosService(cadenaSupermercadosRepository, ventaService, productoService)
 
-        val producto1 = Producto(ConstVals.testProducto1, "Carne", 10.0)
-        val producto2 = Producto(ConstVals.testProducto2, "Pescado", 20.0)
-        val producto3 = Producto(ConstVals.testProducto3, "Pollo", 30.0)
-        val producto4 = Producto(ConstVals.testProducto4, "Cerdo", 45.0)
-        val producto5 = Producto(ConstVals.testProducto5, "Ternera", 50.0)
-        val producto6 = Producto(ConstVals.testProducto6, "Cordero", 65.0)
+        val producto1 = Producto(ConstantValues.testProducto1, "Carne", 10.0)
+        val producto2 = Producto(ConstantValues.testProducto2, "Pescado", 20.0)
+        val producto3 = Producto(ConstantValues.testProducto3, "Pollo", 30.0)
+        val producto4 = Producto(ConstantValues.testProducto4, "Cerdo", 45.0)
+        val producto5 = Producto(ConstantValues.testProducto5, "Ternera", 50.0)
+        val producto6 = Producto(ConstantValues.testProducto6, "Cordero", 65.0)
 
         productoService.addProducto(producto1)
         productoService.addProducto(producto2)
@@ -57,8 +57,8 @@ class CadenaSupermercadosServiceTest {
         productoService.addProducto(producto5)
         productoService.addProducto(producto6)
 
-        val supermercado1 = Supermercado(ConstVals.testSupermercado1, "Supermercado A1", 8, 20, listOf("Lunes", "Martes"))
-        val supermercado2 = Supermercado(ConstVals.testSupermercado2, "Supermercado A2", 8, 20, listOf("Lunes", "Martes"))
+        val supermercado1 = Supermercado(ConstantValues.testSupermercado1, "Supermercado A1", 8, 20, listOf("Lunes", "Martes"))
+        val supermercado2 = Supermercado(ConstantValues.testSupermercado2, "Supermercado A2", 8, 20, listOf("Lunes", "Martes"))
         supermercadoService.addSupermercado(supermercado1)
         supermercadoService.addSupermercado(supermercado2)
 
@@ -66,32 +66,32 @@ class CadenaSupermercadosServiceTest {
         supermercadosParaLaCadena.add(supermercado1)
         supermercadosParaLaCadena.add(supermercado2)
 
-        cadenaSupermercados = CadenaSupermercados(ConstVals.testCadena1, "Cadena A", supermercadosParaLaCadena)
+        cadenaSupermercados = CadenaSupermercados(ConstantValues.testCadena1, "Cadena A", supermercadosParaLaCadena)
         cadenaSupermercadosRepository.addCadenaSupermercados(cadenaSupermercados)
 
-        posesionService.addPosesion(ConstVals.testProducto1, ConstVals.testSupermercado1, 20) // 20 unidades de Carne en Supermercado A1
-        posesionService.addPosesion(ConstVals.testProducto2, ConstVals.testSupermercado1, 10) // 10 unidades de Pescado en Supermercado A1
-        posesionService.addPosesion(ConstVals.testProducto1, ConstVals.testSupermercado2, 15) // 15 unidades de Carne en Supermercado A2
-        posesionService.addPosesion(ConstVals.testProducto3, ConstVals.testSupermercado2, 25) // 25 unidades de Pollo en Supermercado A2
+        posesionService.addPosesion(ConstantValues.testProducto1, ConstantValues.testSupermercado1, 20) // 20 unidades de Carne en Supermercado A1
+        posesionService.addPosesion(ConstantValues.testProducto2, ConstantValues.testSupermercado1, 10) // 10 unidades de Pescado en Supermercado A1
+        posesionService.addPosesion(ConstantValues.testProducto1, ConstantValues.testSupermercado2, 15) // 15 unidades de Carne en Supermercado A2
+        posesionService.addPosesion(ConstantValues.testProducto3, ConstantValues.testSupermercado2, 25) // 25 unidades de Pollo en Supermercado A2
     }
 
     @Test
     fun getCincoProductosMasVendidosTest() {
-        posesionService.addPosesion(ConstVals.testProducto3, ConstVals.testSupermercado1, 15)
-        posesionService.addPosesion(ConstVals.testProducto4, ConstVals.testSupermercado1, 7)
-        posesionService.addPosesion(ConstVals.testProducto5, ConstVals.testSupermercado1, 12)
-        posesionService.addPosesion(ConstVals.testProducto5, ConstVals.testSupermercado2, 4)
-        posesionService.addPosesion(ConstVals.testProducto6, ConstVals.testSupermercado2, 5)
+        posesionService.addPosesion(ConstantValues.testProducto3, ConstantValues.testSupermercado1, 15)
+        posesionService.addPosesion(ConstantValues.testProducto4, ConstantValues.testSupermercado1, 7)
+        posesionService.addPosesion(ConstantValues.testProducto5, ConstantValues.testSupermercado1, 12)
+        posesionService.addPosesion(ConstantValues.testProducto5, ConstantValues.testSupermercado2, 4)
+        posesionService.addPosesion(ConstantValues.testProducto6, ConstantValues.testSupermercado2, 5)
 
-        ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado1, LocalDateTime.now(), 10)
-        ventaService.addVenta(ConstVals.testProducto2, ConstVals.testSupermercado1, LocalDateTime.now(), 5)
-        ventaService.addVenta(ConstVals.testProducto3, ConstVals.testSupermercado1, LocalDateTime.now(), 15)
-        ventaService.addVenta(ConstVals.testProducto4, ConstVals.testSupermercado1, LocalDateTime.now(), 7)
-        ventaService.addVenta(ConstVals.testProducto5, ConstVals.testSupermercado1, LocalDateTime.now(), 12)
-        ventaService.addVenta(ConstVals.testProducto5, ConstVals.testSupermercado2, LocalDateTime.now(), 4)
-        ventaService.addVenta(ConstVals.testProducto6, ConstVals.testSupermercado2, LocalDateTime.now(), 5)
+        ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), 10)
+        ventaService.addVenta(ConstantValues.testProducto2, ConstantValues.testSupermercado1, LocalDateTime.now(), 5)
+        ventaService.addVenta(ConstantValues.testProducto3, ConstantValues.testSupermercado1, LocalDateTime.now(), 15)
+        ventaService.addVenta(ConstantValues.testProducto4, ConstantValues.testSupermercado1, LocalDateTime.now(), 7)
+        ventaService.addVenta(ConstantValues.testProducto5, ConstantValues.testSupermercado1, LocalDateTime.now(), 12)
+        ventaService.addVenta(ConstantValues.testProducto5, ConstantValues.testSupermercado2, LocalDateTime.now(), 4)
+        ventaService.addVenta(ConstantValues.testProducto6, ConstantValues.testSupermercado2, LocalDateTime.now(), 5)
 
-        val top5MasVendidos = cadenaSupermercadosService.getCincoProductosMasVendidos(ConstVals.testCadena1)
+        val top5MasVendidos = cadenaSupermercadosService.getCincoProductosMasVendidos(ConstantValues.testCadena1)
 
         assertEquals("Ternera: 16-Pollo: 15-Carne: 10-Cerdo: 7-Pescado: 5", top5MasVendidos)
     }
@@ -99,66 +99,66 @@ class CadenaSupermercadosServiceTest {
     @Test
     fun getCincoProductosMasVendidosTestConMenosDe5Productos() {
 
-        ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado1, LocalDateTime.now(), 10)
-        ventaService.addVenta(ConstVals.testProducto2, ConstVals.testSupermercado1, LocalDateTime.now(), 9)
+        ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), 10)
+        ventaService.addVenta(ConstantValues.testProducto2, ConstantValues.testSupermercado1, LocalDateTime.now(), 9)
 
-        val top5MasVendidos = cadenaSupermercadosService.getCincoProductosMasVendidos(ConstVals.testCadena1)
+        val top5MasVendidos = cadenaSupermercadosService.getCincoProductosMasVendidos(ConstantValues.testCadena1)
 
         assertEquals("Carne: 10-Pescado: 9", top5MasVendidos)
     }
 
     @Test
     fun getCincoProductosMasVendidosTestSinVentas() {
-        val top5MasVendidos = cadenaSupermercadosService.getCincoProductosMasVendidos(ConstVals.testCadena1)
+        val top5MasVendidos = cadenaSupermercadosService.getCincoProductosMasVendidos(ConstantValues.testCadena1)
 
         assertEquals("No hay ventas registradas para la cadena de supermercados ${cadenaSupermercados.id}.", top5MasVendidos)
     }
 
     @Test
     fun getIngresosTotalesSupermercadosConVentasTest() {
-        ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado1, LocalDateTime.now(), 10)
-        ventaService.addVenta(ConstVals.testProducto2, ConstVals.testSupermercado1, LocalDateTime.now(), 5)
-        ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado2, LocalDateTime.now(), 7)
-        ventaService.addVenta(ConstVals.testProducto3, ConstVals.testSupermercado2, LocalDateTime.now(), 12)
+        ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), 10)
+        ventaService.addVenta(ConstantValues.testProducto2, ConstantValues.testSupermercado1, LocalDateTime.now(), 5)
+        ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado2, LocalDateTime.now(), 7)
+        ventaService.addVenta(ConstantValues.testProducto3, ConstantValues.testSupermercado2, LocalDateTime.now(), 12)
 
-        val resultado = cadenaSupermercadosService.getIngresosTotalesSupermercados(ConstVals.testCadena1)
+        val resultado = cadenaSupermercadosService.getIngresosTotalesSupermercados(ConstantValues.testCadena1)
 
         assertEquals(10.0 * 10 + 20.0 * 5 + 30.0 * 12 + 10.0 * 7, resultado)
     }
 
     @Test
     fun getIngresosTotalesSupermercadosSinVentasTest() {
-        val resultado = cadenaSupermercadosService.getIngresosTotalesSupermercados(ConstVals.testCadena1)
+        val resultado = cadenaSupermercadosService.getIngresosTotalesSupermercados(ConstantValues.testCadena1)
 
         assertEquals(0.0, resultado)
     }
 
     @Test
     fun getSupermercadoMayoresIngresosTest() {
-        posesionService.addPosesion(ConstVals.testProducto2, ConstVals.testSupermercado2, 10)
+        posesionService.addPosesion(ConstantValues.testProducto2, ConstantValues.testSupermercado2, 10)
 
-        ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado1, LocalDateTime.now(), 10)
-        ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado2, LocalDateTime.now(), 15)
-        ventaService.addVenta(ConstVals.testProducto2, ConstVals.testSupermercado2, LocalDateTime.now(), 5)
+        ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), 10)
+        ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado2, LocalDateTime.now(), 15)
+        ventaService.addVenta(ConstantValues.testProducto2, ConstantValues.testSupermercado2, LocalDateTime.now(), 5)
 
-        val resultado = cadenaSupermercadosService.getSupermercadoMayoresIngresos(ConstVals.testCadena1)
-        assertEquals("Supermercado A2 (${ConstVals.testSupermercado2}). Ingresos totales: 250.0", resultado)
+        val resultado = cadenaSupermercadosService.getSupermercadoMayoresIngresos(ConstantValues.testCadena1)
+        assertEquals("Supermercado A2 (${ConstantValues.testSupermercado2}). Ingresos totales: 250.0", resultado)
     }
 
     @Test
     fun getSupermercadoMayoresIngresosEmpateTest() {
-        posesionService.addPosesion(ConstVals.testProducto2, ConstVals.testSupermercado2, 10)
+        posesionService.addPosesion(ConstantValues.testProducto2, ConstantValues.testSupermercado2, 10)
 
-        ventaService.addVenta(ConstVals.testProducto1, ConstVals.testSupermercado1, LocalDateTime.now(), 10)
-        ventaService.addVenta(ConstVals.testProducto2, ConstVals.testSupermercado2, LocalDateTime.now(), 5)
+        ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), 10)
+        ventaService.addVenta(ConstantValues.testProducto2, ConstantValues.testSupermercado2, LocalDateTime.now(), 5)
 
-        val resultado = cadenaSupermercadosService.getSupermercadoMayoresIngresos(ConstVals.testCadena1)
-        assertEquals("Supermercado A1 (${ConstVals.testSupermercado1}). Ingresos totales: 100.0", resultado)
+        val resultado = cadenaSupermercadosService.getSupermercadoMayoresIngresos(ConstantValues.testCadena1)
+        assertEquals("Supermercado A1 (${ConstantValues.testSupermercado1}). Ingresos totales: 100.0", resultado)
     }
 
     @Test
     fun getSupermercadoMayoresIngresosTestSinVentas() {
-        val resultado = cadenaSupermercadosService.getSupermercadoMayoresIngresos(ConstVals.testCadena1)
-        assertEquals("No hay ventas registradas para la cadena de supermercados ${ConstVals.testCadena1}.", resultado)
+        val resultado = cadenaSupermercadosService.getSupermercadoMayoresIngresos(ConstantValues.testCadena1)
+        assertEquals("No hay ventas registradas para la cadena de supermercados ${ConstantValues.testCadena1}.", resultado)
     }
 }

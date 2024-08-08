@@ -1,33 +1,39 @@
 package com.gestionSupermercados.productoSupermercado.posesion
 
-import com.gestionSupermercados.producto.ProductoService
-import com.gestionSupermercados.supermercado.SupermercadoService
 import java.util.*
 
 class PosesionService(
     private val posesionRepository: PosesionRepository,
-    private val productoService: ProductoService,
-    private val supermercadoService: SupermercadoService
 ) {
     fun addPosesion(productoId: UUID, supermercadoId: UUID, stock: Int) {
+        posesionRepository.addPosesion(Posesion(productoId, supermercadoId, stock))
+    }
 
-        val producto = productoService.getProductoById(productoId)
-        val supermercado = supermercadoService.getSupermercadoById(supermercadoId)
-        if (producto != null && supermercado != null) {
-            posesionRepository.addPosesion(
-                Posesion(productoId, supermercadoId, stock)
-            )
-        } else {
+    fun updatePosesionStockByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID, cantidad : Int) {
+        val posesionAModificar = posesionRepository.getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)
+
+        if (posesionAModificar != null){
+            val nuevoStock = posesionAModificar.stock + cantidad
+            if (nuevoStock >= 0){
+                posesionAModificar.stock = nuevoStock
+            }
+            else {
+                throw IllegalArgumentException("El stock no puede ser menor a 0.")
+            }
+        }
+        else {
             throw IllegalArgumentException("Producto o supermercado no encontrado.")
         }
     }
 
-    fun updatePosesionStockByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID, cantidad : Int) {
-        posesionRepository.updatePosesionStockByProductoIdSupermercadoId(productoId, supermercadoId, cantidad)
-    }
+    fun getStock(productoId: UUID, supermercadoId: UUID): Int {
+        val posesion = posesionRepository.getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)
 
-    fun getStock(productoId: UUID, supermercadoId: UUID): Int? {
-
-        return posesionRepository.getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)?.stock
+        if (posesion != null){
+            return posesion.stock
+        }
+        else {
+            throw IllegalArgumentException("Producto o supermercado no encontrado.")
+        }
     }
 }

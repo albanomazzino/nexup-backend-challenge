@@ -12,23 +12,18 @@ class VentaService (
 ) {
 
     fun addVenta(productoId: UUID, supermercadoId: UUID, fecha: LocalDateTime, cantidad: Int) : Double {
-        val stockActual = posesionService.getStock(productoId, supermercadoId) ?: 0
+        val stockActual = posesionService.getStock(productoId, supermercadoId)
 
         if (stockActual >= cantidad) {
-
             ventaRepository.addVenta(productoId, supermercadoId, fecha, cantidad)
             posesionService.updatePosesionStockByProductoIdSupermercadoId(productoId, supermercadoId, -cantidad)
         } else {
             throw IllegalArgumentException("No es posible vender $cantidad unidades, el stock es de $stockActual.")
         }
 
-        val precioProductoVendido = productoService.getProductoById(productoId)?.precio
-        if (precioProductoVendido != null) {
-            return cantidad * precioProductoVendido
-        }
-        else {
-            throw IllegalArgumentException("No se encontró el producto con ID $productoId.")
-        }
+        val precioProductoVendido = productoService.getProductoById(productoId).precio
+
+        return cantidad * precioProductoVendido
     }
 
     fun getCantidadVendidaByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Int {
@@ -39,12 +34,7 @@ class VentaService (
         val ventasProducto = ventaRepository.getVentasByProductoIdSupermercadoId(productoId, supermercadoId)
         val producto = productoService.getProductoById(productoId)
 
-        if (producto != null){
-            return ventasProducto.sumOf { it.cantidad * producto.precio }
-        }
-        else {
-            throw IllegalArgumentException("No se encontró el producto con ID $productoId.")
-        }
+        return ventasProducto.sumOf { it.cantidad * producto.precio }
     }
 
     fun getAllVentas() : List<Venta> {
@@ -55,10 +45,9 @@ class VentaService (
         val ventasSupermercado = ventaRepository.getAllVentas().filter { it.supermercadoId == supermercadoId }
         var ingresosTotales = 0.0
         for (venta in ventasSupermercado){
-            val precioProductoVendido = productoService.getProductoById(venta.productoId)?.precio
-            if (precioProductoVendido != null){
-                ingresosTotales += precioProductoVendido * venta.cantidad
-            }
+            val precioProductoVendido = productoService.getProductoById(venta.productoId).precio
+            ingresosTotales += precioProductoVendido * venta.cantidad
+
         }
 
         return ingresosTotales
