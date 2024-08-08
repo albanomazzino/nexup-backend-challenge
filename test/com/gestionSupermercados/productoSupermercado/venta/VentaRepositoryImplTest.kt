@@ -7,13 +7,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-class VentaRepositoryTest {
+class VentaRepositoryImplTest {
 
-    private lateinit var ventaRepository: VentaRepository
+    private lateinit var ventaRepository: VentaRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        ventaRepository = VentaRepository()
+        ventaRepository = VentaRepositoryImpl()
     }
 
     @Test

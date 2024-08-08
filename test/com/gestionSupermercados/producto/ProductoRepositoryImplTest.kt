@@ -6,13 +6,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 
-class ProductoRepositoryTest {
+class ProductoRepositoryImplTest {
 
-    private lateinit var productoRepository : ProductoRepository
+    private lateinit var productoRepository : ProductoRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        productoRepository = ProductoRepository()
+        productoRepository = ProductoRepositoryImpl()
     }
 
     @Test

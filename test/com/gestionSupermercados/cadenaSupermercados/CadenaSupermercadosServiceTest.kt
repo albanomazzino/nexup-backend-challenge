@@ -2,14 +2,14 @@ package com.gestionSupermercados.cadenaSupermercados
 
 import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.producto.Producto
-import com.gestionSupermercados.producto.ProductoRepository
+import com.gestionSupermercados.producto.ProductoRepositoryImpl
 import com.gestionSupermercados.producto.ProductoService
-import com.gestionSupermercados.productoSupermercado.posesion.PosesionRepository
+import com.gestionSupermercados.productoSupermercado.posesion.PosesionRepositoryImpl
 import com.gestionSupermercados.productoSupermercado.posesion.PosesionService
-import com.gestionSupermercados.productoSupermercado.venta.VentaRepository
+import com.gestionSupermercados.productoSupermercado.venta.VentaRepositoryImpl
 import com.gestionSupermercados.productoSupermercado.venta.VentaService
 import com.gestionSupermercados.supermercado.Supermercado
-import com.gestionSupermercados.supermercado.SupermercadoRepository
+import com.gestionSupermercados.supermercado.SupermercadoRepositoryImpl
 import com.gestionSupermercados.supermercado.SupermercadoService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -19,24 +19,24 @@ import java.time.LocalDateTime
 class CadenaSupermercadosServiceTest {
 
     private lateinit var cadenaSupermercadosService: CadenaSupermercadosService
-    private lateinit var cadenaSupermercadosRepository: CadenaSupermercadosRepository
+    private lateinit var cadenaSupermercadosRepository: CadenaSupermercadosRepositoryImpl
     private lateinit var ventaService: VentaService
     private lateinit var productoService: ProductoService
-    private lateinit var productoRepository: ProductoRepository
+    private lateinit var productoRepository: ProductoRepositoryImpl
     private lateinit var supermercadoService: SupermercadoService
-    private lateinit var supermercadoRepository: SupermercadoRepository
-    private lateinit var posesionRepository: PosesionRepository
+    private lateinit var supermercadoRepository: SupermercadoRepositoryImpl
+    private lateinit var posesionRepository: PosesionRepositoryImpl
     private lateinit var posesionService: PosesionService
-    private lateinit var ventaRepository: VentaRepository
+    private lateinit var ventaRepository: VentaRepositoryImpl
     private lateinit var cadenaSupermercados: CadenaSupermercados
 
     @BeforeEach
     fun setUp() {
-        cadenaSupermercadosRepository = CadenaSupermercadosRepository()
-        productoRepository = ProductoRepository()
-        supermercadoRepository = SupermercadoRepository()
-        ventaRepository = VentaRepository()
-        posesionRepository = PosesionRepository()
+        cadenaSupermercadosRepository = CadenaSupermercadosRepositoryImpl()
+        productoRepository = ProductoRepositoryImpl()
+        supermercadoRepository = SupermercadoRepositoryImpl()
+        ventaRepository = VentaRepositoryImpl()
+        posesionRepository = PosesionRepositoryImpl()
         productoService = ProductoService(productoRepository)
         supermercadoService = SupermercadoService(supermercadoRepository)
         posesionService = PosesionService(posesionRepository)

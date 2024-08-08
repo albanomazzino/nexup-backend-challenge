@@ -3,22 +3,30 @@ package com.gestionSupermercados.cadenaSupermercados
 import com.gestionSupermercados.supermercado.Supermercado
 import java.util.*
 
-class CadenaSupermercadosRepository {
+interface CadenaSupermercadosRepository {
+    fun addCadenaSupermercados(cadenaSupermercados: CadenaSupermercados)
+    fun getAllSupermercadosCadena(idCadenaSupermercados: UUID): List<Supermercado>?
+    fun getCadenaSupermercadosById(id: UUID): CadenaSupermercados?
+    fun getAllSupermercadosAbiertos(cadenaSupermercadosId: UUID, hora: Int, dia: String): List<Supermercado>?
+    fun addSupermercado(cadenaSupermercadosId: UUID, supermercado: Supermercado)
+}
+
+class CadenaSupermercadosRepositoryImpl : CadenaSupermercadosRepository {
     private val cadenaSupermercados = mutableListOf<CadenaSupermercados>()
 
-    fun addCadenaSupermercados(cadenaSupermercados: CadenaSupermercados) {
+    override fun addCadenaSupermercados(cadenaSupermercados: CadenaSupermercados) {
         this.cadenaSupermercados.add(cadenaSupermercados)
     }
 
-    fun getAllSupermercadosCadena(idCadenaSupermercados: UUID) : List<Supermercado>? {
+    override fun getAllSupermercadosCadena(idCadenaSupermercados: UUID) : List<Supermercado>? {
         return getCadenaSupermercadosById(idCadenaSupermercados)?.supermercados
     }
 
-    fun getCadenaSupermercadosById(id : UUID) : CadenaSupermercados? {
+    override fun getCadenaSupermercadosById(id : UUID) : CadenaSupermercados? {
         return cadenaSupermercados.find { it.id == id }
     }
 
-    fun getAllSupermercadosAbiertos(cadenaSupermercadosId : UUID, hora: Int, dia :String) : List<Supermercado>? {
+    override fun getAllSupermercadosAbiertos(cadenaSupermercadosId : UUID, hora: Int, dia :String) : List<Supermercado>? {
         val supermercadosCadena = getAllSupermercadosCadena(cadenaSupermercadosId)
         if (supermercadosCadena != null){
             return supermercadosCadena.filter { it.horarioApertura <= hora && hora <= it.horarioCierre && it.diasAbierto.contains(dia) }
@@ -26,7 +34,7 @@ class CadenaSupermercadosRepository {
         return null
     }
 
-    fun addSupermercado(cadenaSupermercadosId: UUID, supermercado: Supermercado) {
+    override fun addSupermercado(cadenaSupermercadosId: UUID, supermercado: Supermercado) {
         val cadenaSupermercados = getCadenaSupermercadosById(cadenaSupermercadosId)
         if (cadenaSupermercados != null) {
             cadenaSupermercados.supermercados.add(supermercado)

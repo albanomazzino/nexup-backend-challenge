@@ -8,11 +8,11 @@ import java.util.*
 
 class SupermercadoServiceTest {
     private lateinit var supermercadoService: SupermercadoService
-    private lateinit var supermercadoRepository: SupermercadoRepository
+    private lateinit var supermercadoRepository: SupermercadoRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        supermercadoRepository = SupermercadoRepository()
+        supermercadoRepository = SupermercadoRepositoryImpl()
         supermercadoService = SupermercadoService(supermercadoRepository)
     }
 

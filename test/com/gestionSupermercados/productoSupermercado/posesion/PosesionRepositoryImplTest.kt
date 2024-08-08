@@ -6,12 +6,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 
-class PosesionRepositoryTest {
-    private lateinit var posesionRepository: PosesionRepository
+class PosesionRepositoryImplTest {
+    private lateinit var posesionRepository: PosesionRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        posesionRepository = PosesionRepository()
+        posesionRepository = PosesionRepositoryImpl()
     }
 
     @Test
