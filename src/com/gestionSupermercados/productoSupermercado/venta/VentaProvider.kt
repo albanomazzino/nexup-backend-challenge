@@ -1,18 +1,17 @@
 package com.gestionSupermercados.productoSupermercado.venta
 
-import com.gestionSupermercados.producto.ProductoProvider
-import com.gestionSupermercados.productoSupermercado.posesion.PosesionProvider
+import com.gestionSupermercados.ServiceProvider
 
 object VentaProvider {
     fun getVentaService(): VentaService {
+        val productoService = ServiceProvider.getProductoService()
+        val posesionService = ServiceProvider.getPosesionService()
         val ventaRepository = getVentaRepository()
-        val posesionService = PosesionProvider.getPosesionService()
-        val productoService = ProductoProvider.getProductoService()
 
         return VentaServiceImpl(ventaRepository, posesionService, productoService)
     }
 
-    private fun getVentaRepository() : VentaRepository{
+    private fun getVentaRepository() : VentaRepository {
         return VentaRepositoryImpl()
     }
 }

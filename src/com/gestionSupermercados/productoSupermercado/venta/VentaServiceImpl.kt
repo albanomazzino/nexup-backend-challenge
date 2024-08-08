@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 interface VentaService {
-    fun addVenta(productoId: UUID, supermercadoId: UUID, fecha: LocalDateTime, cantidad: Int): Double
+    fun addVenta(productoId: UUID, supermercadoId: UUID, fecha: LocalDateTime, cantidadVenta: Int): Double
     fun getCantidadVendidaByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Int
     fun getIngresosByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Double
     fun getAllVentas(): List<Venta>
