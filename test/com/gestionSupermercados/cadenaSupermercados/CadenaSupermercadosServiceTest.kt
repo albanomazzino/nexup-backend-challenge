@@ -57,7 +57,7 @@ class CadenaSupermercadosServiceTest {
         productoService.addProducto(producto5)
         productoService.addProducto(producto6)
 
-        val supermercado1 = Supermercado(ConstantValues.testSupermercado1, "Supermercado A1", 8, 20, listOf("Lunes", "Martes"))
+        val supermercado1 = Supermercado(ConstantValues.testSupermercado1, "Supermercado A1", 9, 20, listOf("Lunes", "Martes"))
         val supermercado2 = Supermercado(ConstantValues.testSupermercado2, "Supermercado A2", 8, 20, listOf("Lunes", "Martes"))
         supermercadoService.addSupermercado(supermercado1)
         supermercadoService.addSupermercado(supermercado2)
@@ -158,7 +158,51 @@ class CadenaSupermercadosServiceTest {
 
     @Test
     fun getSupermercadoMayoresIngresosTestSinVentas() {
-        val resultado = cadenaSupermercadosService.getSupermercadoMayoresIngresos(ConstantValues.testCadena1)
-        assertEquals("No hay ventas registradas para la cadena de supermercados ${ConstantValues.testCadena1}.", resultado)
+        val supermercadoMayoresIngresosEnCadenaSupermercados = cadenaSupermercadosService.getSupermercadoMayoresIngresos(ConstantValues.testCadena1)
+        assertEquals("No hay ventas registradas para la cadena de supermercados ${ConstantValues.testCadena1}.", supermercadoMayoresIngresosEnCadenaSupermercados)
+    }
+
+    @Test
+    fun getAllSupermercadosAbiertosUnResultadoTest() {
+        val supermercadosAbiertos = cadenaSupermercadosService.getAllSupermercadosAbiertos(
+            ConstantValues.testCadena1,
+            hora = 8,
+            dia = "Lunes"
+        )
+
+        assertEquals("Supermercado A2 (${ConstantValues.testSupermercado2})", supermercadosAbiertos)
+    }
+
+    @Test
+    fun getAllSupermercadosAbiertosVariosResultadosTest() {
+        val supermercadosAbiertos = cadenaSupermercadosService.getAllSupermercadosAbiertos(
+            ConstantValues.testCadena1,
+            hora = 9,
+            dia = "Lunes"
+        )
+
+        assertEquals("Supermercado A1 (${ConstantValues.testSupermercado1}), Supermercado A2 (${ConstantValues.testSupermercado2})", supermercadosAbiertos)
+    }
+
+    @Test
+    fun getAllSupermercadosAbiertosWithNoOccurrencesCase1Test() {
+        val supermercadosAbiertos = cadenaSupermercadosService.getAllSupermercadosAbiertos(
+            ConstantValues.testCadena1,
+            hora = 8,
+            dia = "Miércoles"
+        )
+
+        assertEquals("No se encontraron supermercados abiertos.", supermercadosAbiertos)
+    }
+
+    @Test
+    fun getAllSupermercadosAbiertosWithNoOccurrencesCase2Test() {
+        val supermercadosAbiertos = cadenaSupermercadosService.getAllSupermercadosAbiertos(
+            ConstantValues.testCadena1,
+            hora = 21,
+            dia = "Lunes"
+        )
+
+        assertEquals("No se encontraron supermercados abiertos.", supermercadosAbiertos)
     }
 }

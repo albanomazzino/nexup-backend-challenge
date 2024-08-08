@@ -28,7 +28,10 @@ class CadenaSupermercadosRepositoryImpl : CadenaSupermercadosRepository {
 
     override fun getAllSupermercadosAbiertos(cadenaSupermercadosId : UUID, hora: Int, dia :String) : List<Supermercado>? {
         val supermercadosCadena = getAllSupermercadosCadena(cadenaSupermercadosId)
-        return supermercadosCadena?.filter { it.horarioApertura <= hora && hora <= it.horarioCierre && it.diasAbierto.contains(dia) }
+        if (supermercadosCadena != null){
+            return supermercadosCadena.filter { it.horarioApertura <= hora && hora <= it.horarioCierre && it.diasAbierto.contains(dia) }
+        }
+        return null
     }
 
     override fun addSupermercado(cadenaSupermercadosId: UUID, supermercado: Supermercado) {

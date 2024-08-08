@@ -81,6 +81,13 @@ class CadenaSupermercadosRepositoryImplTest {
     }
 
     @Test
+    fun getAllSupermercadosAbiertosWithInvalidCadenaSupermercadosIdTest() {
+        val supermercadosAbiertos = cadenaSupermercadosRepository.getAllSupermercadosAbiertos(UUID.randomUUID(), 21, "Lunes")
+
+        assertNull(supermercadosAbiertos)
+    }
+
+    @Test
     fun getCadenaSupermercadosByIdTest() {
         val cadenaSupermercados = cadenaSupermercadosRepository.getCadenaSupermercadosById(ConstantValues.testCadena1)
 
