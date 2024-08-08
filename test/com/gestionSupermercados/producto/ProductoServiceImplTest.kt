@@ -6,14 +6,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 
-class ProductoServiceTest {
-    private lateinit var productoService: ProductoService
+class ProductoServiceImplTest {
+    private lateinit var productoService: ProductoServiceImpl
     private lateinit var productoRepository: ProductoRepositoryImpl
 
     @BeforeEach
     fun setUp() {
         productoRepository = ProductoRepositoryImpl()
-        productoService = ProductoService(productoRepository)
+        productoService = ProductoServiceImpl(productoRepository)
     }
 
     @Test

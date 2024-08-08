@@ -3,30 +3,30 @@ package com.gestionSupermercados.cadenaSupermercados
 import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.producto.Producto
 import com.gestionSupermercados.producto.ProductoRepositoryImpl
-import com.gestionSupermercados.producto.ProductoService
+import com.gestionSupermercados.producto.ProductoServiceImpl
 import com.gestionSupermercados.productoSupermercado.posesion.PosesionRepositoryImpl
-import com.gestionSupermercados.productoSupermercado.posesion.PosesionService
+import com.gestionSupermercados.productoSupermercado.posesion.PosesionServiceImpl
 import com.gestionSupermercados.productoSupermercado.venta.VentaRepositoryImpl
-import com.gestionSupermercados.productoSupermercado.venta.VentaService
+import com.gestionSupermercados.productoSupermercado.venta.VentaServiceImpl
 import com.gestionSupermercados.supermercado.Supermercado
 import com.gestionSupermercados.supermercado.SupermercadoRepositoryImpl
-import com.gestionSupermercados.supermercado.SupermercadoService
+import com.gestionSupermercados.supermercado.SupermercadoServiceImpl
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-class CadenaSupermercadosServiceTest {
+class CadenaSupermercadosServiceImplTest {
 
-    private lateinit var cadenaSupermercadosService: CadenaSupermercadosService
+    private lateinit var cadenaSupermercadosService: CadenaSupermercadosServiceImpl
     private lateinit var cadenaSupermercadosRepository: CadenaSupermercadosRepositoryImpl
-    private lateinit var ventaService: VentaService
-    private lateinit var productoService: ProductoService
+    private lateinit var ventaService: VentaServiceImpl
+    private lateinit var productoService: ProductoServiceImpl
     private lateinit var productoRepository: ProductoRepositoryImpl
-    private lateinit var supermercadoService: SupermercadoService
+    private lateinit var supermercadoService: SupermercadoServiceImpl
     private lateinit var supermercadoRepository: SupermercadoRepositoryImpl
     private lateinit var posesionRepository: PosesionRepositoryImpl
-    private lateinit var posesionService: PosesionService
+    private lateinit var posesionService: PosesionServiceImpl
     private lateinit var ventaRepository: VentaRepositoryImpl
     private lateinit var cadenaSupermercados: CadenaSupermercados
 
@@ -37,11 +37,11 @@ class CadenaSupermercadosServiceTest {
         supermercadoRepository = SupermercadoRepositoryImpl()
         ventaRepository = VentaRepositoryImpl()
         posesionRepository = PosesionRepositoryImpl()
-        productoService = ProductoService(productoRepository)
-        supermercadoService = SupermercadoService(supermercadoRepository)
-        posesionService = PosesionService(posesionRepository)
-        ventaService = VentaService(ventaRepository, posesionService, productoService)
-        cadenaSupermercadosService = CadenaSupermercadosService(cadenaSupermercadosRepository, ventaService, productoService)
+        productoService = ProductoServiceImpl(productoRepository)
+        supermercadoService = SupermercadoServiceImpl(supermercadoRepository)
+        posesionService = PosesionServiceImpl(posesionRepository)
+        ventaService = VentaServiceImpl(ventaRepository, posesionService, productoService)
+        cadenaSupermercadosService = CadenaSupermercadosServiceImpl(cadenaSupermercadosRepository, ventaService, productoService)
 
         val producto1 = Producto(ConstantValues.testProducto1, "Carne", 10.0)
         val producto2 = Producto(ConstantValues.testProducto2, "Pescado", 20.0)

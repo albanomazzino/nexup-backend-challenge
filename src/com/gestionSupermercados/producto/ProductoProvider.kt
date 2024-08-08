@@ -6,6 +6,6 @@ object ProductoProvider {
     }
 
     fun getProductoService(): ProductoService {
-        return ProductoService(productoRepository)
+        return ProductoServiceImpl(productoRepository)
     }
 }
