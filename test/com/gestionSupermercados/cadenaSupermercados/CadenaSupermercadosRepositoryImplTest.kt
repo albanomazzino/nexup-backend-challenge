@@ -10,11 +10,12 @@ import java.util.*
 
 class CadenaSupermercadosRepositoryImplTest {
 
-    private lateinit var cadenaSupermercadosRepository: CadenaSupermercadosRepositoryImpl
+    private lateinit var cadenaSupermercadosRepository: CadenaSupermercadosRepository
 
     @BeforeEach
     fun setUp() {
         cadenaSupermercadosRepository = CadenaSupermercadosRepositoryImpl()
+
         val cadena1 = CadenaSupermercados(ConstantValues.testCadena1, "Cadena A", mutableListOf())
         val cadena2 = CadenaSupermercados(ConstantValues.testCadena2, "Cadena B", mutableListOf())
         cadenaSupermercadosRepository.addCadenaSupermercados(cadena1)

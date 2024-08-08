@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 class VentaRepositoryImplTest {
 
-    private lateinit var ventaRepository: VentaRepositoryImpl
+    private lateinit var ventaRepository: VentaRepository
 
     @BeforeEach
     fun setUp() {

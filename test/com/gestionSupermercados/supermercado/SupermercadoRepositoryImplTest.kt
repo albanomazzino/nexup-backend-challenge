@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 class SupermercadoRepositoryImplTest {
-    private lateinit var supermercadoRepository: SupermercadoRepositoryImpl
+    private lateinit var supermercadoRepository: SupermercadoRepository
 
     @BeforeEach
     fun setUp() {

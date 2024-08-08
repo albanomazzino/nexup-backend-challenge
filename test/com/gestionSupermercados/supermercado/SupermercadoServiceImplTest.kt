@@ -4,25 +4,27 @@ import com.gestionSupermercados.ConstantValues
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.*
 import java.util.*
 
 class SupermercadoServiceImplTest {
-    private lateinit var supermercadoService: SupermercadoServiceImpl
-    private lateinit var supermercadoRepository: SupermercadoRepositoryImpl
+    private lateinit var supermercadoService: SupermercadoService
+    private lateinit var supermercadoRepository: SupermercadoRepository
 
     @BeforeEach
     fun setUp() {
-        supermercadoRepository = SupermercadoRepositoryImpl()
+        supermercadoRepository = mock(SupermercadoRepository::class.java)
         supermercadoService = SupermercadoServiceImpl(supermercadoRepository)
     }
 
     @Test
     fun addSupermercadoTest() {
         val supermercadoAgregado = Supermercado(ConstantValues.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
+
+        doNothing().`when`(supermercadoRepository).addSupermercado(supermercadoAgregado)
         supermercadoService.addSupermercado(supermercadoAgregado)
 
-        val supermercadoEncontrado = supermercadoService.getSupermercadoById(ConstantValues.testSupermercado1)
-        assertEquals(supermercadoAgregado, supermercadoEncontrado)
+        verify(supermercadoRepository).addSupermercado(supermercadoAgregado)
     }
 
     @Test
@@ -33,6 +35,8 @@ class SupermercadoServiceImplTest {
         supermercadoService.addSupermercado(supermercado1)
         supermercadoService.addSupermercado(supermercado2)
 
+        `when`(supermercadoRepository.getSupermercadoById(ConstantValues.testSupermercado1)).thenReturn(supermercado1)
+        `when`(supermercadoRepository.getSupermercadoById(ConstantValues.testSupermercado2)).thenReturn(supermercado2)
         val supermercadoEncontrado1 = supermercadoService.getSupermercadoById(ConstantValues.testSupermercado1)
         val supermercadoEncontrado2 = supermercadoService.getSupermercadoById(ConstantValues.testSupermercado2)
 
@@ -43,6 +47,8 @@ class SupermercadoServiceImplTest {
     @Test
     fun getSupermercadoByIdWithNoOccurrencesTest() {
         val testId = UUID.randomUUID()
+
+        `when`(supermercadoRepository.getSupermercadoById(testId)).thenThrow(NoSuchElementException("Supermercado con ID $testId no encontrado."))
         val exception = assertThrows(NoSuchElementException::class.java) {
             supermercadoService.getSupermercadoById(testId)
         }

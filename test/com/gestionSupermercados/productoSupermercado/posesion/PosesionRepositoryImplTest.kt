@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 class PosesionRepositoryImplTest {
-    private lateinit var posesionRepository: PosesionRepositoryImpl
+    private lateinit var posesionRepository: PosesionRepository
 
     @BeforeEach
     fun setUp() {
