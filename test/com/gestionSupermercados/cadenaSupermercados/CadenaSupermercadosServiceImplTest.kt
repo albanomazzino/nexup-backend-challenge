@@ -7,6 +7,7 @@ import com.gestionSupermercados.productoSupermercado.venta.Venta
 import com.gestionSupermercados.productoSupermercado.venta.VentaService
 import com.gestionSupermercados.supermercado.Supermercado
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*

@@ -2,8 +2,24 @@ package com.gestionSupermercados.supermercado
 
 import java.util.*
 
+/**
+ * Interfaz para el servicio de supermercados.
+ */
 interface SupermercadoService {
+    /**
+     * Añade un nuevo supermercado.
+     *
+     * @param supermercado El supermercado a añadir.
+     */
     fun addSupermercado(supermercado: Supermercado)
+
+    /**
+     * Obtiene un supermercado por su ID.
+     *
+     * @param id El id del supermercado a buscar.
+     * @return El supermercado correspondiente al id proporcionado.
+     * @throws NoSuchElementException Si no se encuentra un supermercado con el id proporcionado.
+     */
     fun getSupermercadoById(id: UUID): Supermercado
 }
 

@@ -4,11 +4,50 @@ import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.supermercado.Supermercado
 import java.util.*
 
+/**
+ * Gestiona la persistencia de las cadenas de supermercados.
+ */
 interface CadenaSupermercadosRepository {
+    /**
+     * Añade una nueva cadena de supermercados.
+     *
+     * @param cadenaSupermercados
+     */
     fun addCadenaSupermercados(cadenaSupermercados: CadenaSupermercados)
+
+    /**
+     * Obtiene todos los supermercados de una cadena específica.
+     *
+     * @param idCadenaSupermercados Id de la cadena de supermercados.
+     * @return Lista de supermercados asociados a la cadena.
+     */
     fun getAllSupermercadosCadena(idCadenaSupermercados: UUID): List<Supermercado>?
+
+    /**
+     * Obtiene una cadena de supermercados por su Id.
+     *
+     * @param id Id de la cadena de supermercados.
+     * @return La cadena de supermercados correspondiente al ID.
+     */
     fun getCadenaSupermercadosById(id: UUID): CadenaSupermercados?
+
+    /**
+     * Obtiene, para una cadena específica, todos los supermercados abiertos en un horario y día determinado.
+     *
+     * @param cadenaSupermercadosId Id de la cadena de supermercados.
+     * @param hora Hora en la que se obtienen los supermercados abiertos.
+     * @param dia Día en el que se obtienen los supermercados están abiertos.
+     * @return Lista de supermercados abiertos.
+     */
     fun getAllSupermercadosAbiertos(cadenaSupermercadosId: UUID, hora: Int, dia: String): List<Supermercado>?
+
+    /**
+     * Añade un supermercado a una cadena de supermercados específica.
+     *
+     * @param cadenaSupermercadosId Id de la cadena de supermercados.
+     * @param supermercado El supermercado a añadir.
+     * @throws IllegalArgumentException Si no se encuentra la cadena de supermercados con el id proporcionado.
+     */
     fun addSupermercado(cadenaSupermercadosId: UUID, supermercado: Supermercado)
 }
 

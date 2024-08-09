@@ -3,9 +3,35 @@ package com.gestionSupermercados.productoSupermercado.posesion
 import com.gestionSupermercados.ConstantValues
 import java.util.*
 
+/**
+ * Interfaz para el servicio de gestión de la posesión de productos en supermercados.
+ */
 interface PosesionService {
+    /**
+     * Añade una nueva posesión de un producto en un supermercado con una cantidad inicial de stock.
+     *
+     * @param productoId Id del producto.
+     * @param supermercadoId Id del supermercado.
+     * @param stock Cantidad inicial de stock del producto en el supermercado.
+     */
     fun addPosesion(productoId: UUID, supermercadoId: UUID, stock: Int)
+
+    /**
+     * Actualiza la cantidad de stock de un producto en un supermercado específico.
+     *
+     * @param productoId Id del producto.
+     * @param supermercadoId Id del supermercado.
+     * @param cantidad Cantidad a añadir o restar del stock actual. Puede ser negativa.
+     */
     fun updatePosesionStockByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID, cantidad: Int)
+
+    /**
+     * Obtiene el stock actual de un producto en un supermercado específico.
+     *
+     * @param productoId Id del producto.
+     * @param supermercadoId Id del supermercado.
+     * @return Cantidad de stock del producto en el supermercado.
+     */
     fun getStock(productoId: UUID, supermercadoId: UUID): Int
 }
 

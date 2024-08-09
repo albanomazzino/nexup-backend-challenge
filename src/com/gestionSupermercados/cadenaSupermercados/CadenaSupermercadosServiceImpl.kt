@@ -7,11 +7,53 @@ import com.gestionSupermercados.productoSupermercado.venta.VentaService
 import com.gestionSupermercados.supermercado.Supermercado
 import java.util.*
 
+
+/**
+ * Servicio para gestionar operaciones relacionadas con cadenas de supermercados.
+ */
 interface CadenaSupermercadosService {
+    /**
+     * Añade una nueva cadena de supermercados.
+     *
+     * @param cadenaSupermercados La cadena de supermercados a añadir.
+     */
     fun addCadenaSupermercados(cadenaSupermercados : CadenaSupermercados)
+
+    /**
+     * Obtiene los cinco productos más vendidos en una cadena de supermercados específica.
+     *
+     * @param cadenaSupermercadosId Id de la cadena de supermercados.
+     * @return Una cadena de texto que representa los cinco productos más vendidos, en el formato:
+     *         <nombre_producto1>: cantidad_vendida-<nombre_producto2>: cantidad_vendida-...-<nombre_producto5>: cantidad_vendida
+     */
     fun getCincoProductosMasVendidos(cadenaSupermercadosId: UUID): String
+
+    /**
+     * Obtiene los ingresos totales de todos los supermercados en una cadena específica.
+     *
+     * @param cadenaSupermercadosId Id de la cadena de supermercados.
+     * @return El total de ingresos generados por todos los supermercados en la cadena.
+     */
     fun getIngresosTotalesSupermercados(cadenaSupermercadosId: UUID): Double
+
+    /**
+     * Obtiene el supermercado con mayores ingresos en una cadena específica.
+     *
+     * @param cadenaSupermercadosId Id de la cadena de supermercados.
+     * @return Una cadena de texto que representa el supermercado con mayores ingresos, en el formato:
+     *         <nombre_supermercado> (<id_supermercado>). Ingresos totales: <ingresos_totales>
+     */
     fun getSupermercadoMayoresIngresos(cadenaSupermercadosId: UUID): String
+
+    /**
+     * Obtiene todos los supermercados abiertos, para una cadena específica, en un horario y día determinado.
+     *
+     * @param cadenaSupermercadosId Id de la cadena de supermercados.
+     * @param hora Hora en que se verifica qué supermercados están abiertos.
+     * @param dia Día en que se verifica qué supermercados están abiertos.
+     * @return Una cadena de texto que representa todos los supermercados abiertos, en el formato:
+     *         <nombre_supermercado1> (<id_supermercado1>), <nombre_supermercado2> (<id_supermercado2>), ...
+     */
     fun getAllSupermercadosAbiertos(cadenaSupermercadosId: UUID, hora: Int, dia: String): String
 }
 

@@ -5,11 +5,52 @@ import com.gestionSupermercados.productoSupermercado.posesion.PosesionService
 import java.time.LocalDateTime
 import java.util.*
 
+/**
+ * Interfaz para el servicio de ventas.
+ */
 interface VentaService {
+    /**
+     * Añade una nueva venta y actualiza el stock del producto.
+     *
+     * @param productoId Id del producto vendido.
+     * @param supermercadoId Id del supermercado donde se realizó la venta.
+     * @param fecha Fecha y hora en que se realizó la venta.
+     * @param cantidadVenta Cantidad vendida del producto.
+     * @return Ingresos generados por la venta.
+     */
     fun addVenta(productoId: UUID, supermercadoId: UUID, fecha: LocalDateTime, cantidadVenta: Int): Double
+
+    /**
+     * Obtiene la cantidad total vendida de un producto en un supermercado específico.
+     *
+     * @param productoId Id del producto.
+     * @param supermercadoId Id del supermercado.
+     * @return Cantidad total vendida del producto en el supermercado.
+     */
     fun getCantidadVendidaByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Int
+
+    /**
+     * Obtiene los ingresos generados por todas las ventas de un producto en un supermercado específico.
+     *
+     * @param productoId Id del producto.
+     * @param supermercadoId Id del supermercado.
+     * @return Ingresos totales generados por el producto en el supermercado.
+     */
     fun getIngresosByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Double
+
+    /**
+     * Obtiene todas las ventas registradas.
+     *
+     * @return Una lista de todas las ventas.
+     */
     fun getAllVentas(): List<Venta>
+
+    /**
+     * Obtiene los ingresos totales generados por un supermercado específico.
+     *
+     * @param supermercadoId Id del supermercado.
+     * @return Ingresos totales generados por el supermercado.
+     */
     fun getIngresosTotalesBySupermercadoId(supermercadoId: UUID): Double
 }
 
