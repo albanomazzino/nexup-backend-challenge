@@ -1,78 +1,42 @@
-# Nexup Backend Challenge
+Asunciones
+----------
+- Se almacena la fecha de cada venta, aunque no es un requisito explícito del sistema.
+----------
+Dependencias
+----------
+- Requiere 'mockito.core' versión 5.12.0.
 
-En este repositorio, se encuentra la prueba técnica para el puesto de Backend Developer en Nexup.
+----------
+Decisiones de diseño y cuestiones de arquitectura
+----------
+- Arquitectura: Se ha optado por una arquitectura "by feature", agrupando las unidades de trabajo en módulos que correspondan a una misma característica del sistema.
+- Modelo de Datos: El modelo de datos se basa en un análisis y diseño previo al desarollo, realizado en un diagrama entidad-relación. Ver anexo 'ER-supermercados' al final del documento.
+  Relaciones entre Entidades: En el caso de CadenaSupermercados, se ha decidido usar una lista de supermercados dentro de la cadena en lugar de una tabla intermedia. 
+Esta decisión se basa en que la relación es de muchos a uno, simplificando el modelo de datos.
+- Control de Versiones: Se ha optado por ramificar los esfuerzos de trabajo para identificar cada una de las iteraciones ágiles realizadas y separar el trabajo por características y por capas. 
+- Identificadores Únicos: Se utilizan UUIDs como identificadores. Esta elección se debe a que, al trabajar con estructuras de datos en memoria en lugar de persistentes, 
+los UUIDs proporcionan una solución elegante y eficaz para garantizar identificadores únicos.
+----------
+Optimizaciones
+----------
+ Si se deseara continuar iterando sobre el producto, se podrían considerar las siguientes optimizaciones:
+- Hacer uso de containerization (e.g. Docker)
 
-Este challenge está diseñado para evaluar tus habilidades de Kotlin y resolución de problemas.
+- Servicios Auxiliares: Agregar un servicio getAllVentasBySupermercadoId() en VentaRepository para mejorar la eficiencia. Actualmente, 
+se realiza la funcionalidad deseada (obtener todas las ventas de un supermercado) mediante "joins" o filtrados entre estructuras de datos completas en memoria, 
+lo cual es costoso en términos de tiempo de ejecución. La creación de funcionalidades auxiliares en el DAO puede mejorar significativamente la performance del sistema
+en varias de los servicios.
 
-## Problema a resolver
+- Supermercado: Horario de Apertura, horario de cierre: Mantener la hora como un entero presenta limitaciones para horarios con minutos (e.g.: 16:15, 16:30), aunque
+si se desean modelar horarios de ese estilo, es factible aún modelándolo con Integer.
 
-Crear las clases y funciones necesarias para resolver el siguiente problema:
-- Se tiene una **cadena de supermercados**
-- Se tienen **productos**, cada uno con un ID único, nombre y precio
-- Se tienen **supermercados**, cada uno con un ID único, nombre, un listado de productos y el stock asociado a cada uno (el stock puede variar entre los distintos supermercados)
-    - Los supermercados comparten los distintos productos
+- Venta: Almacenar los ingresos de la venta en su modelo de datos es una inversión en espacio (64 bits para un Double), 
+pero resulta en una significativa mejora en eficiencia al reducir la necesidad de consultas adicionales para obtener datos del producto asociado a una venta.
 
-- Funcionalidades requeridas para cada _supermercado_:
-  - Registrar una venta de un producto
-    - Dado un ID de producto y una cantidad a vender, se debe registrar la venta de un producto
-    - La función debe retornar el precio total de la venta
-  - Obtener la cantidad vendida de un producto
-    - Dado un ID de producto, retornar la cantidad vendida de dicho producto
-  - Obtener ingresos por ventas de un producto
-    - Dado un ID de producto, retornar el dinero obtenido de las ventas de dicho producto
-  - Obtener ingresos totales
-    - Retornar el dinero total obtenido de todas las ventas realizadas
+- Generalización de funcionalidades y abstracción: Abstraer valores arbitrarios, como el número 5 para el top 5 de productos más vendidos, 
+para generalizar la funcionalidad a un top K de productos y hacerla más flexible.
 
-- Funcionalidades requeridas para la _cadena de supermercados_:
-  - Obtener los 5 productos más vendidos
-    - Buscar los 5 productos más vendidos en toda la cadena  
-    - Retornar un _string_ con el formato `<nombre_producto>: cantidad_vendida`, concatenados con un guión
-  - Obtener ingresos totales
-    - Retornar el dinero total obtenido de todas las ventas realizadas en toda la cadena
-  - Obtener el supermercado con mayor cantidad de ingresos por ventas
-    - Retornar un _string_ con el formato `<nombre_supermercado> (<id>). Ingresos totales: <ingresos>`
- 
-Para cada una de las funcionalidades planteadas:
-- Definir los nombres de las funciones, parámetros y demás datos cómo consideres adecuado
-- Documentar y comentar el código dónde consideres necesario
-- Manejar todos los casos de error que consideres necesarios
-- Agregar todos los tests que consideres necesarios
+- Anotaciones throws en interfaces: Para documentar las excepciones que pueden ser lanzadas por los métodos.
 
-### Objetivo opcional
-
-Se desea manejar para cada supermercado su hora de apertura y cierre, así cómo los días donde se encuentra abierto. Agregar los datos necesarios para manejar dicha información.
-
-Sobre la cadena de supermercados, agregar una funcionalidad que, dado un cierto día y horario, se pueda obtener la lista de supermercados abiertos en ese momento.
-Se espera obtener la respuesta como un _string_ con el formato `<nombre_supermercado> (<id>)`, y se concatenen con una coma.
-
-
-## Pasos a seguir:
-1. Clone este repositorio en su máquina local usando Git.
-   ```bash
-   git clone https://gitlab.com/nexup/nexup-backend-challenge.git
-   ```
-2. Crea un repositorio vacío en tu cuenta de GitHub con el mismo nombre de este.
-   ```bash
-    nexup-backend-challenge
-   ```
-3. Muevesé a la carpeta del proyecto.
-   ```bash
-   cd ./nexup-backend-challenge
-   ```
-4. Cambia la URL remota del repositorio clonado de GitHub, por la URL de tu repositorio.
-   ```bash
-   git remote set-url origin <tu-repositorio.git>
-   ```
-5. Sube el código a tu repositorio.
-
-## Recomendaciones
-- **No** hagas un _fork_ de este repositorio.
-- **No** hagas _push_ directamente a este repositorio.
-- Crea un commit por cada cambio que realices. Utiliza mensajes **claros** y **descriptivos** para documentar tu proceso.
-- No es necesario el uso de base de datos ni archivos para manejar los datos de prueba. Podes utilizar estructuras de datos en memoria.
-- Dentro del proyecto se encuentra un archivo de ejemplo para ejecución de las pruebas, modificarlo como sea necesario para adaptarlo al problema.
-  - En el archivo de pruebas se encuentra un ejemplo de datos a usar en la ejecución de los Tests
-
-## Entregables
-- Un enlace a un repositorio de GitHub con el código resolviendo el problema planteado.
-- Opcional: Un archivo README con explicaciones sobre el enfoque utilizado y cualquier otra información relevante.
+- Los ids y las fechas de creación de entidades no deberían traerse desde la capa de servicio, pueden generarse en el repositorio al almacenar la información.
+- Supermercado y Venta: No se asocia el rango horario de un supermercado a la capacidad de vender, lo que permite realizar ventas incluso cuando un supermercado está cerrado.

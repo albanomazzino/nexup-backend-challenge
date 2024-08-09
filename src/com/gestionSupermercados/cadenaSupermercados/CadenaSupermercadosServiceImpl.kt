@@ -68,15 +68,6 @@ class CadenaSupermercadosServiceImpl(
         cadenaSupermercadosRepository.addCadenaSupermercados(cadenaSupermercados)
     }
 
-    /*
-        0. Obtener los IDs de los supermercados de la cadena
-        1. Filtrar las ventas que corresponden a estos supermercados
-        2. Comprobamos si se registraron ventas
-        3. Mapear las ventas para acumular la cantidad total vendida por producto
-        4. Ordenar el mapa de productos por la cantidad vendida en orden descendente
-        5. Obtener las primeras 5 posiciones del mapa
-        6. Formatear y devolver el resultado
-    */
     override fun getCincoProductosMasVendidos(cadenaSupermercadosId : UUID): String {
         val supermercadosCadenaIDs = getSupermercadosCadenaIDs(cadenaSupermercadosId)
         val ventasCadenaSupermercados = filtrarVentasBySupermercados(supermercadosCadenaIDs)
@@ -90,12 +81,6 @@ class CadenaSupermercadosServiceImpl(
         return outputFormatter.formatTopProductos(top5ProductosMasVendidos)
     }
 
-    /*
-       0. Obtener los IDs de los supermercados de la cadena
-       1. Filtrar las ventas que corresponden a estos supermercados
-       2. Mapear las ventas para acumular la cantidad total vendida por producto
-       3. Obtener el precio de cada producto y calcular los ingresos totales
-     */
     override fun getIngresosTotalesSupermercados(cadenaSupermercadosId: UUID): Double {
         val supermercadosCadenaIDs = getSupermercadosCadenaIDs(cadenaSupermercadosId)
         val ventasCadenaSupermercados = filtrarVentasBySupermercados(supermercadosCadenaIDs)
