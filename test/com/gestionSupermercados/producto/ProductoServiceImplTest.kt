@@ -4,17 +4,15 @@ import com.gestionSupermercados.ConstantValues
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.*
 import java.util.*
 
 class ProductoServiceImplTest {
+    private val productoRepository = mock(ProductoRepository::class.java)
     private lateinit var productoService: ProductoService
-    private lateinit var productoRepository: ProductoRepository
 
     @BeforeEach
     fun setUp() {
-        productoRepository = mock(ProductoRepository::class.java)
         productoService = ProductoServiceImpl(productoRepository)
     }
 
@@ -24,8 +22,8 @@ class ProductoServiceImplTest {
 
         `when`(productoRepository.getProductoById(ConstantValues.testProducto1))
             .thenReturn(producto)
-        doNothing().`when`(productoRepository).addProducto(producto)
 
+        doNothing().`when`(productoRepository).addProducto(producto)
         productoService.addProducto(producto)
 
         val productoEncontrado = productoService.getProductoById(ConstantValues.testProducto1)
@@ -34,11 +32,33 @@ class ProductoServiceImplTest {
     }
 
     @Test
+    fun addProductoWithEmptyNameThrowsException() {
+        val producto = Producto(ConstantValues.testProducto1, "", 10.0)
+
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            productoService.addProducto(producto)
+        }
+
+        assertEquals("El nombre del producto no puede estar vacío.", exception.message)
+        verify(productoRepository, never()).addProducto(producto)
+    }
+
+    @Test
+    fun addProductoWithNegativePriceThrowsException() {
+        val producto = Producto(ConstantValues.testProducto1, "Carne", 0.0)
+
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            productoService.addProducto(producto)
+        }
+
+        assertEquals("El precio del producto debe ser mayor a 0.", exception.message)
+        verify(productoRepository, never()).addProducto(producto)
+    }
+
+    @Test
     fun getProductoByIdTest() {
         val producto1 = Producto(ConstantValues.testProducto1, "Carne", 10.0)
         val producto2 = Producto(ConstantValues.testProducto2, "Pescado", 20.0)
-        productoService.addProducto(producto1)
-        productoService.addProducto(producto2)
 
         `when`(productoRepository.getProductoById(ConstantValues.testProducto1))
             .thenReturn(producto1)
@@ -59,6 +79,10 @@ class ProductoServiceImplTest {
             productoService.getProductoById(testId)
         }
 
-        assertEquals("Producto con ID $testId no encontrado.", exception.message)
+        assertEquals(productoNoEncontradoMessage(testId), exception.message)
+    }
+
+    private fun productoNoEncontradoMessage(productoId: UUID): String {
+        return String.format(ConstantValues.PRODUCTO_NO_ENCONTRADO_MESSAGE, productoId)
     }
 }

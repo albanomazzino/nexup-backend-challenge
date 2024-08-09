@@ -1,5 +1,6 @@
 package com.gestionSupermercados.cadenaSupermercados
 
+import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.supermercado.Supermercado
 import java.util.*
 
@@ -39,7 +40,7 @@ class CadenaSupermercadosRepositoryImpl : CadenaSupermercadosRepository {
         if (cadenaSupermercados != null) {
             cadenaSupermercados.supermercados.add(supermercado)
         } else {
-            throw IllegalArgumentException("Cadena de supermercados no encontrada.")
+            throw IllegalArgumentException(ConstantValues.CADENASUPERMERCADOS_NO_ENCONTRADA_MESSAGE)
         }
     }
 }

@@ -27,4 +27,3 @@ class CadenaSupermercadosOutputFormatterImpl (private val productoService: Produ
         return supermercadosAbiertos.joinToString(", ") { "${it.nombre} (${it.id})" }
     }
 }
-

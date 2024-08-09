@@ -1,5 +1,6 @@
 package com.gestionSupermercados.productoSupermercado.posesion
 
+import com.gestionSupermercados.ConstantValues
 import java.util.*
 
 interface PosesionService {
@@ -10,6 +11,7 @@ interface PosesionService {
 
 class PosesionServiceImpl(private val posesionRepository: PosesionRepository) : PosesionService {
     override fun addPosesion(productoId: UUID, supermercadoId: UUID, stock: Int) {
+        validarStock(stock)
         posesionRepository.addPosesion(Posesion(productoId, supermercadoId, stock))
     }
 
@@ -27,7 +29,7 @@ class PosesionServiceImpl(private val posesionRepository: PosesionRepository) : 
 
     private fun getPosesionByProductoIdSupermercadoId(productoId: UUID, supermercadoId: UUID): Posesion {
         return posesionRepository.getPosesionByProductoIdSupermercadoId(productoId, supermercadoId)
-            ?: throw IllegalArgumentException("Producto o supermercado no encontrado.")
+            ?: throw IllegalArgumentException(ConstantValues.PRODUCTO_O_SUPERMERCADO_NO_ENCONTRADO_MESSAGE)
     }
 
     private fun calcularNuevoStock(stockActual: Int, cantidad: Int): Int {
@@ -36,7 +38,7 @@ class PosesionServiceImpl(private val posesionRepository: PosesionRepository) : 
 
     private fun validarStock(nuevoStock: Int) {
         if (nuevoStock < 0) {
-            throw IllegalArgumentException("El stock no puede ser menor a 0.")
+            throw IllegalArgumentException(ConstantValues.STOCK_NEGATIVO_MESSAGE)
         }
     }
 

@@ -2,11 +2,8 @@ package com.gestionSupermercados.productoSupermercado.venta
 
 import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.producto.Producto
-import com.gestionSupermercados.producto.ProductoRepository
 import com.gestionSupermercados.producto.ProductoService
 import com.gestionSupermercados.productoSupermercado.posesion.PosesionService
-import com.gestionSupermercados.supermercado.Supermercado
-import com.gestionSupermercados.supermercado.SupermercadoService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -15,86 +12,61 @@ import java.time.LocalDateTime
 import java.util.*
 
 class VentaServiceImplTest {
+    private val ventaRepository = mock(VentaRepository::class.java)
+    private val productoService = mock(ProductoService::class.java)
+    private val posesionService = mock(PosesionService::class.java)
     private lateinit var ventaService: VentaService
-    private lateinit var ventaRepository: VentaRepository
-    private lateinit var productoService: ProductoService
-    private lateinit var posesionService: PosesionService
-    private lateinit var supermercadoService: SupermercadoService
-    private lateinit var productoRepository: ProductoRepository
 
 
     @BeforeEach
     fun setUp() {
-        productoRepository = mock(ProductoRepository::class.java)
-        ventaRepository = mock(VentaRepository::class.java)
-        supermercadoService = mock(SupermercadoService::class.java)
-        posesionService = mock(PosesionService::class.java)
-        productoService = mock(ProductoService::class.java)
         ventaService = VentaServiceImpl(ventaRepository, posesionService, productoService)
     }
 
     @Test
     fun addVentaTest() {
         val producto = Producto(ConstantValues.testProducto1, "Carne", 10.0)
-        val supermercado = Supermercado(ConstantValues.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
-
-        `when`(productoService.getProductoById(ConstantValues.testProducto1)).thenReturn(producto)
-        `when`(supermercadoService.getSupermercadoById(ConstantValues.testSupermercado1)).thenReturn(supermercado)
-        `when`(posesionService.getStock(ConstantValues.testProducto1, ConstantValues.testSupermercado1)).thenReturn(100)
-
-        val cantidad = 10
+        val cantidadStock = 100
+        val cantidadVenta = 10
         val fecha = LocalDateTime.now()
 
+        `when`(productoService.getProductoById(ConstantValues.testProducto1)).thenReturn(producto)
+        `when`(posesionService.getStock(ConstantValues.testProducto1, ConstantValues.testSupermercado1)).thenReturn(cantidadStock)
         `when`(ventaRepository.getAllVentas()).thenReturn(
             listOf(
-                Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, fecha, cantidad)
+                Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, fecha, cantidadVenta)
             )
         )
 
-        val precioTotalVenta = ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, fecha, cantidad)
-        assertEquals(cantidad * producto.precio, precioTotalVenta)
+        val precioTotalVenta = ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, fecha, cantidadVenta)
+        val venta = ventaRepository.getAllVentas().lastOrNull()
 
-        val precioVenta = ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, fecha, cantidad)
-        assertEquals(precioTotalVenta, precioVenta)
-
-        val ventas = ventaRepository.getAllVentas()
-        assertNotNull(ventas.lastOrNull())
-        val venta = ventas.lastOrNull()
-
-        assertEquals(ConstantValues.testProducto1, venta?.productoId)
-        assertEquals(ConstantValues.testSupermercado1, venta?.supermercadoId)
-        assertEquals(cantidad, venta?.cantidad)
-        assertEquals(fecha, venta?.fecha)
+        assertEquals(cantidadVenta * producto.precio, precioTotalVenta)
+        assertNotNull(venta)
+        assertVenta(venta!!, ConstantValues.testProducto1, ConstantValues.testSupermercado1, cantidadVenta, fecha)
     }
 
     @Test
     fun addVentaWithInsufficientStockTest() {
         val producto = Producto(ConstantValues.testProducto1, "Carne", 10.0)
-        val supermercado = Supermercado(ConstantValues.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
+        val cantidadStock = 10
+        val cantidadVenta = 20
+        val fecha = LocalDateTime.now()
 
         `when`(productoService.getProductoById(ConstantValues.testProducto1)).thenReturn(producto)
-        `when`(supermercadoService.getSupermercadoById(ConstantValues.testSupermercado1)).thenReturn(supermercado)
+        `when`(posesionService.getStock(ConstantValues.testProducto1, ConstantValues.testSupermercado1)).thenReturn(cantidadStock)
 
-        val testCantidadStock = 10
-        `when`(posesionService.getStock(ConstantValues.testProducto1, ConstantValues.testSupermercado1)).thenReturn(testCantidadStock)
-
-        val testCantidadVenta = 20
-        val testFecha = LocalDateTime.now()
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, testFecha, testCantidadVenta)
+            ventaService.addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, fecha, cantidadVenta)
         }
 
-        assertEquals("No es posible vender $testCantidadVenta unidades, el stock es de $testCantidadStock.", exception.message)
-        verify(ventaRepository, times(0)).addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, testFecha, testCantidadVenta)
+        assertEquals("No es posible vender $cantidadVenta unidades, el stock es de $cantidadStock.", exception.message)
+        verify(ventaRepository, never()).addVenta(ConstantValues.testProducto1, ConstantValues.testSupermercado1, fecha, cantidadVenta)
     }
 
     @Test
     fun getCantidadVendidaByProductoIdSupermercadoIdTest() {
-        val producto = Producto(ConstantValues.testProducto1, "Carne", 10.0)
-        val supermercado = Supermercado(ConstantValues.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
-
-        `when`(productoService.getProductoById(ConstantValues.testProducto1)).thenReturn(producto)
-        `when`(supermercadoService.getSupermercadoById(ConstantValues.testSupermercado1)).thenReturn(supermercado)
+        val cantidadVenta = 15
 
         val ventas = listOf(
             Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), 10),
@@ -104,7 +76,7 @@ class VentaServiceImplTest {
         `when`(ventaRepository.getVentasByProductoIdSupermercadoId(ConstantValues.testProducto1, ConstantValues.testSupermercado1)).thenReturn(ventas)
 
         val cantidadVendida = ventaService.getCantidadVendidaByProductoIdSupermercadoId(ConstantValues.testProducto1, ConstantValues.testSupermercado1)
-        assertEquals(15, cantidadVendida)
+        assertEquals(cantidadVenta, cantidadVendida)
 
         verify(ventaRepository).getVentasByProductoIdSupermercadoId(ConstantValues.testProducto1, ConstantValues.testSupermercado1)
     }
@@ -112,21 +84,21 @@ class VentaServiceImplTest {
     @Test
     fun getIngresosByProductoIdSupermercadoIdTest() {
         val producto = Producto(ConstantValues.testProducto1, "Carne", 10.0)
-        val supermercado = Supermercado(ConstantValues.testSupermercado1, "Supermercado A", 8, 20, listOf("Lunes", "Martes"))
+        val cantidadVentaA = 10
+        val cantidadVentaB = 5
 
         `when`(productoService.getProductoById(ConstantValues.testProducto1)).thenReturn(producto)
-        `when`(supermercadoService.getSupermercadoById(ConstantValues.testSupermercado1)).thenReturn(supermercado)
-
         val ventas = listOf(
-            Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), 10),
-            Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), 5)
+            Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), cantidadVentaA),
+            Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), cantidadVentaB)
         )
 
         `when`(ventaRepository.getVentasByProductoIdSupermercadoId(ConstantValues.testProducto1, ConstantValues.testSupermercado1)).thenReturn(ventas)
 
+        val cantidadTotalVendida = cantidadVentaA + cantidadVentaB
         val ingresos = ventaService.getIngresosByProductoIdSupermercadoId(ConstantValues.testProducto1, ConstantValues.testSupermercado1)
-        assertEquals(15 * producto.precio, ingresos)
 
+        assertEquals(cantidadTotalVendida * producto.precio, ingresos)
         verify(ventaRepository).getVentasByProductoIdSupermercadoId(ConstantValues.testProducto1, ConstantValues.testSupermercado1)
     }
 
@@ -134,21 +106,27 @@ class VentaServiceImplTest {
     fun getIngresosTotalesBySupermercadoIdTest() {
         val producto1 = Producto(ConstantValues.testProducto1, "Carne", 10.0)
         val producto2 = Producto(ConstantValues.testProducto2, "Pescado", 20.0)
-        val cantidadProducto1 = 10
-        val cantidadProducto2 = 5
+        val cantidadVentaProducto1 = 10
+        val cantidadVentaProducto2 = 5
 
         `when`(productoService.getProductoById(ConstantValues.testProducto1)).thenReturn(producto1)
         `when`(productoService.getProductoById(ConstantValues.testProducto2)).thenReturn(producto2)
         `when`(ventaRepository.getAllVentas()).thenReturn(
             listOf(
-                Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), cantidadProducto1),
-                Venta(UUID.randomUUID(), ConstantValues.testProducto2, ConstantValues.testSupermercado1, LocalDateTime.now(), cantidadProducto2)
+                Venta(UUID.randomUUID(), ConstantValues.testProducto1, ConstantValues.testSupermercado1, LocalDateTime.now(), cantidadVentaProducto1),
+                Venta(UUID.randomUUID(), ConstantValues.testProducto2, ConstantValues.testSupermercado1, LocalDateTime.now(), cantidadVentaProducto2)
             )
         )
 
         val ingresosTotales = ventaService.getIngresosTotalesBySupermercadoId(ConstantValues.testSupermercado1)
 
-        assertEquals(cantidadProducto1 * producto1.precio + cantidadProducto2 * producto2.precio, ingresosTotales)
+        assertEquals(cantidadVentaProducto1 * producto1.precio + cantidadVentaProducto2 * producto2.precio, ingresosTotales)
     }
 
+    private fun assertVenta(venta: Venta, productoId: UUID, supermercadoId: UUID, cantidad: Int, fecha: LocalDateTime) {
+        assertEquals(productoId, venta.productoId)
+        assertEquals(supermercadoId, venta.supermercadoId)
+        assertEquals(cantidad, venta.cantidad)
+        assertEquals(fecha, venta.fecha)
+    }
 }
