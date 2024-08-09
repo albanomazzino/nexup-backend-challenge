@@ -42,4 +42,5 @@ para generalizar la funcionalidad a un top K de productos y hacerla más flexibl
 - Supermercado y Venta: No se asocia el rango horario de un supermercado a la capacidad de vender, lo que permite realizar ventas incluso cuando un supermercado está cerrado.
 ----------
 Anexo ER-supermercados
+----------
   ![ER-supermercados](https://github.com/user-attachments/assets/518e57c7-beb9-47cb-98fe-14e78e8373b8)
