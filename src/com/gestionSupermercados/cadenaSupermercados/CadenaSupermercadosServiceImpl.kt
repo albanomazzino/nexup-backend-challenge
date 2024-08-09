@@ -1,5 +1,6 @@
 package com.gestionSupermercados.cadenaSupermercados
 
+import com.gestionSupermercados.ConstantValues
 import com.gestionSupermercados.producto.ProductoService
 import com.gestionSupermercados.productoSupermercado.venta.Venta
 import com.gestionSupermercados.productoSupermercado.venta.VentaService
@@ -7,6 +8,7 @@ import com.gestionSupermercados.supermercado.Supermercado
 import java.util.*
 
 interface CadenaSupermercadosService {
+    fun addCadenaSupermercados(cadenaSupermercados : CadenaSupermercados)
     fun getCincoProductosMasVendidos(cadenaSupermercadosId: UUID): String
     fun getIngresosTotalesSupermercados(cadenaSupermercadosId: UUID): Double
     fun getSupermercadoMayoresIngresos(cadenaSupermercadosId: UUID): String
@@ -19,6 +21,11 @@ class CadenaSupermercadosServiceImpl(
     private val productoService: ProductoService,
     private val outputFormatter: CadenaSupermercadosOutputFormatter
 ) : CadenaSupermercadosService {
+    override fun addCadenaSupermercados(cadenaSupermercados: CadenaSupermercados) {
+        validarCadenaSupermercados(cadenaSupermercados)
+        cadenaSupermercadosRepository.addCadenaSupermercados(cadenaSupermercados)
+    }
+
     /*
         0. Obtener los IDs de los supermercados de la cadena
         1. Filtrar las ventas que corresponden a estos supermercados
@@ -78,6 +85,16 @@ class CadenaSupermercadosServiceImpl(
             outputFormatter.formatSupermercadosAbiertos(supermercadosAbiertos)
     }
 
+    private fun validarCadenaSupermercados(cadenaSupermercados: CadenaSupermercados) {
+        if (cadenaSupermercados.nombre.isBlank()) {
+            throw IllegalArgumentException("El nombre de la cadena de supermercados no puede estar en blanco.")
+        }
+
+        if (cadenaSupermercados.supermercados.isEmpty()) {
+            throw IllegalArgumentException("La lista de supermercados no puede estar vacía o ser nula.")
+        }
+    }
+
     private fun getSupermercadosAbiertos(cadenaSupermercadosId: UUID, hora: Int, dia: String): List<Supermercado>? {
         return cadenaSupermercadosRepository.getAllSupermercadosAbiertos(cadenaSupermercadosId, hora, dia)
     }
@@ -88,13 +105,13 @@ class CadenaSupermercadosServiceImpl(
 
     private fun getSupermercadosCadenaIDs(cadenaSupermercadosId: UUID): List<UUID> {
         val supermercadosCadena = cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId)
-            ?: throw IllegalArgumentException("Cadena de supermercados no encontrada.")
+            ?: throw IllegalArgumentException(ConstantValues.CADENASUPERMERCADOS_NO_ENCONTRADA_MESSAGE)
         return supermercadosCadena.map { it.id }
     }
 
     private fun getSupermercadosCadena(cadenaSupermercadosId: UUID): List<Supermercado> {
         return cadenaSupermercadosRepository.getAllSupermercadosCadena(cadenaSupermercadosId)
-            ?: throw IllegalArgumentException("Cadena de supermercados no encontrada.")
+            ?: throw IllegalArgumentException(ConstantValues.CADENASUPERMERCADOS_NO_ENCONTRADA_MESSAGE)
     }
 
     private fun filtrarVentasBySupermercados(supermercadoIds: List<UUID>): List<Venta> {
